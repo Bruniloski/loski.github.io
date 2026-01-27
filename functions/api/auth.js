@@ -8,7 +8,7 @@ export async function onRequest(context) {
     return new Response("Invalid provider", { status: 400 });
   }
 
-  const redirectUri = `${url.origin}/api/auth/callback`;
+  const redirectUri = `${url.origin}/api/callback`;
   const clientId = env.GITHUB_CLIENT_ID;
   const scope = "repo";
 
