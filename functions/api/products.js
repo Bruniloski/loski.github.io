@@ -1,56 +1,73 @@
 export async function onRequest() {
-  // Repo y carpeta donde Decap guarda los productos
   const owner = "Bruniloski";
   const repo = "loski.github.io";
   const path = "products";
 
-  // 1) Listar archivos en /products usando GitHub Contents API (repo público)
   const listUrl = `https://api.github.com/repos/${owner}/${repo}/contents/${path}`;
   const listRes = await fetch(listUrl, {
-    headers: { "Accept": "application/vnd.github+json" },
+    headers: { Accept: "application/vnd.github+json" },
   });
 
   if (!listRes.ok) {
-    return new Response(
-      JSON.stringify({ error: "No pude listar /products", status: listRes.status }),
-      { status: 500, headers: { "Content-Type": "application/json" } }
+    return json(
+      { error: "No pude listar /products", status: listRes.status },
+      500
     );
   }
 
   const entries = await listRes.json();
-  const files = (Array.isArray(entries) ? entries : [])
-    .filter(x => x.type === "file" && (x.name.endsWith(".md") || x.name.endsWith(".markdown")));
+  const files = (Array.isArray(entries) ? entries : []).filter(
+    (x) =>
+      x.type === "file" &&
+      (x.name.endsWith(".md") || x.name.endsWith(".markdown"))
+  );
 
-  // 2) Descargar cada markdown y sacar el frontmatter
   const products = [];
   for (const f of files) {
     const rawRes = await fetch(f.download_url);
     if (!rawRes.ok) continue;
-    const text = await rawRes.text();
 
+    const text = await rawRes.text();
     const { data, body } = parseFrontmatter(text);
 
-    // Adaptamos a tu estructura actual de UI:
     products.push({
-      name: data.title || f.name.replace(/\.(md|markdown)$/i, ""),
-      price: Number(data.price || 0),
+      name: String(data.title ?? f.name.replace(/\.(md|markdown)$/i, "")).trim(),
+      price: Number(data.price ?? 0),
       priority: !!data.priority,
-      link: typeof data.link === "string" ? data.link : "",
-      // En Decap la imagen suele quedar tipo "/uploads/xxx.jpg"
-      imageDataUrl: typeof data.image === "string" ? data.image : "",
-      notes: body || ""
+      link: typeof data.link === "string" ? data.link.trim() : "",
+      image: typeof data.image === "string" ? data.image.trim() : "",
+      notes: (body || "").trim(),
+      slug: f.name.replace(/\.(md|markdown)$/i, ""),
     });
   }
 
+  // orden por prioridad primero, luego por precio desc
+  products.sort((a, b) => {
+    const ap = a.priority ? 1 : 0;
+    const bp = b.priority ? 1 : 0;
+    if (bp !== ap) return bp - ap;
+    return Number(b.price) - Number(a.price);
+  });
+
   return new Response(JSON.stringify(products), {
     headers: {
-      "Content-Type": "application/json",
+      "Content-Type": "application/json; charset=utf-8",
       "Cache-Control": "no-store",
     },
   });
 }
 
-// Frontmatter muy simple: ---\nkey: value\n---\nbody...
+function json(obj, status = 200) {
+  return new Response(JSON.stringify(obj), {
+    status,
+    headers: {
+      "Content-Type": "application/json; charset=utf-8",
+      "Cache-Control": "no-store",
+    },
+  });
+}
+
+// Frontmatter simple: ---\nkey: value\n---\nbody...
 function parseFrontmatter(md) {
   const m = md.match(/^---\s*\n([\s\S]*?)\n---\s*\n?([\s\S]*)$/);
   if (!m) return { data: {}, body: md };
