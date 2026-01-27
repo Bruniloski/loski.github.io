@@ -1,8 +1,6 @@
-# URL pública de tu web
 site_url: https://loski-github-io.pages.dev
 display_url: https://loski-github-io.pages.dev
 
-# Backend: GitHub + Cloudflare Pages
 backend:
   name: github
   repo: Bruniloski/loski.github.io
@@ -10,11 +8,9 @@ backend:
   base_url: https://loski-github-io.pages.dev
   auth_endpoint: api/auth
 
-# Carpeta donde se guardan las imágenes subidas
 media_folder: "uploads"
 public_folder: "/uploads"
 
-# Colecciones (tu "base de datos")
 collections:
   - name: "products"
     label: "Productos"
@@ -42,6 +38,11 @@ collections:
         name: "priority"
         widget: "boolean"
         default: false
+
+      - label: "Enlace"
+        name: "link"
+        widget: "string"
+        required: false
 
       - label: "Imagen del producto"
         name: "image"
