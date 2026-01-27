@@ -1,0 +1,1176 @@
+<!doctype html>
+<html lang="ca">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Wishlist</title>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
+
+    :root{
+      --text:#f2f6ff;
+      --muted:rgba(242,246,255,.72);
+      --shadow: 0 20px 60px rgba(0,0,0,.45);
+      --radius:18px;
+
+      /* DIA (desenganxament) */
+      --skyTop:#0b2a4a;
+      --skyMid:#123a63;
+      --skyLow:#1e5fa3;
+      --skyBottom:#5fa9e6;
+
+      --panel: rgba(10,30,55,.75);
+      --panel2: rgba(255,255,255,.06);
+      --stroke: rgba(160,210,255,.18);
+
+      --accent1:#1e78c8;
+      --accent2:#9fd4ff;
+
+      --chipBg: rgba(255,255,255,.06);
+      --chipStroke: rgba(255,255,255,.10);
+
+      --btnBg: rgba(255,255,255,.08);
+      --btnStroke: rgba(255,255,255,.12);
+
+      --dangerBg: rgba(255,92,108,.14);
+      --dangerStroke: rgba(255,92,108,.25);
+
+      --prioStroke: rgba(255,204,102,.45);
+      --prioGlow: rgba(255,204,102,.22);
+      --prioBg: rgba(255,204,102,.10);
+      --prioText: rgba(255,235,190,.95);
+
+      --link: rgba(37,205,255,.95);
+      --linkStroke: rgba(37,205,255,.25);
+      --linkBg: rgba(37,205,255,.08);
+    }
+
+    /* NIT (creuer) */
+    [data-theme="night"]{
+      --text:#eef3ff;
+      --muted:rgba(238,243,255,.75);
+
+      --skyTop:#040712;
+      --skyMid:#061226;
+      --skyLow:#071e39;
+      --skyBottom:#0a2c4a;
+
+      --panel: rgba(6,14,28,.80);
+      --panel2: rgba(255,255,255,.05);
+      --stroke: rgba(140,190,255,.14);
+
+      --accent1:#0f6fbf;
+      --accent2:#7fc6ff;
+
+      --chipBg: rgba(255,255,255,.05);
+      --chipStroke: rgba(255,255,255,.08);
+
+      --btnBg: rgba(255,255,255,.07);
+      --btnStroke: rgba(255,255,255,.10);
+
+      --dangerBg: rgba(255,92,108,.12);
+      --dangerStroke: rgba(255,92,108,.22);
+
+      --link: rgba(120,210,255,.95);
+      --linkStroke: rgba(120,210,255,.22);
+      --linkBg: rgba(120,210,255,.07);
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+
+    body{
+      margin:0;
+      color:var(--text);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      background: linear-gradient(to bottom,
+        var(--skyTop) 0%,
+        var(--skyMid) 35%,
+        var(--skyLow) 60%,
+        var(--skyBottom) 100%
+      );
+      background-attachment: fixed;
+      overflow-x:hidden;
+    }
+
+    /* ===== NÚVOLS (MÉS GRANS, MÉS VISIBLES, MÉS NOMBROSOS) ===== */
+
+    /* Capa 1 núvols (animada) */
+    body::before{
+      content:"";
+      position:fixed;
+      inset:-55%;
+      background:
+        radial-gradient(1200px 460px at 18% 18%, rgba(255,255,255,.12), transparent 65%),
+        radial-gradient(1100px 420px at 70% 22%, rgba(255,255,255,.10), transparent 66%),
+        radial-gradient(1300px 520px at 45% 48%, rgba(255,255,255,.09), transparent 70%),
+        radial-gradient(1200px 460px at 25% 70%, rgba(255,255,255,.08), transparent 70%),
+        radial-gradient(1400px 540px at 78% 74%, rgba(255,255,255,.08), transparent 70%),
+
+        radial-gradient(900px 360px at 8% 40%, rgba(255,255,255,.07), transparent 70%),
+        radial-gradient(980px 380px at 92% 52%, rgba(255,255,255,.07), transparent 70%),
+        radial-gradient(1000px 400px at 55% 10%, rgba(255,255,255,.06), transparent 70%),
+        radial-gradient(1050px 420px at 52% 92%, rgba(255,255,255,.06), transparent 70%),
+        radial-gradient(950px 360px at 35% 30%, rgba(255,255,255,.06), transparent 70%);
+      pointer-events:none;
+      opacity:.95;
+      transform: translate3d(0,0,0);
+      animation: cloudDrift1 40s linear infinite;
+      filter: blur(0.2px);
+    }
+
+    /* Capa 2 núvols (animada, diferent direcció/velocitat) */
+    body::after{
+      content:"";
+      position:fixed;
+      inset:-60%;
+      background:
+        radial-gradient(1400px 560px at 12% 30%, rgba(255,255,255,.08), transparent 72%),
+        radial-gradient(1500px 600px at 82% 35%, rgba(255,255,255,.07), transparent 72%),
+        radial-gradient(1350px 520px at 58% 62%, rgba(255,255,255,.06), transparent 74%),
+        radial-gradient(1250px 500px at 28% 88%, rgba(255,255,255,.06), transparent 74%),
+
+        radial-gradient(1000px 420px at 40% 38%, rgba(255,255,255,.05), transparent 75%),
+        radial-gradient(980px 400px at 65% 18%, rgba(255,255,255,.05), transparent 75%),
+        radial-gradient(980px 400px at 15% 60%, rgba(255,255,255,.05), transparent 75%),
+        radial-gradient(980px 400px at 88% 78%, rgba(255,255,255,.05), transparent 75%);
+      pointer-events:none;
+      opacity:.85;
+      transform: translate3d(0,0,0);
+      animation: cloudDrift2 62s linear infinite;
+      filter: blur(0.4px);
+    }
+
+    @keyframes cloudDrift1{
+      from { transform: translate3d(0,0,0); }
+      to   { transform: translate3d(-220px, 140px, 0); }
+    }
+    @keyframes cloudDrift2{
+      from { transform: translate3d(0,0,0); }
+      to   { transform: translate3d(260px, -160px, 0); }
+    }
+
+    /* Mode nit: núvols també visibles però una mica més discrets */
+    :root[data-theme="night"] body::before{ opacity:.55; }
+    :root[data-theme="night"] body::after{ opacity:.45; }
+
+    /* ===== Detall PRO: llum de cabina (DIA) + estrelles (NIT, MÉS I MÉS VISIBLES) ===== */
+
+    .wrap{max-width: 1040px;margin: 28px auto;padding: 0 16px 28px; position:relative}
+
+    /* Llum cabina DIA */
+    :root[data-theme="day"] .wrap::before{
+      content:"";
+      position:fixed;
+      inset:-20%;
+      pointer-events:none;
+      z-index:-1;
+      background:
+        radial-gradient(620px 380px at 12% 10%,
+          rgba(160,220,255,.22),
+          rgba(160,220,255,.10) 42%,
+          transparent 72%);
+      mix-blend-mode: screen;
+      opacity:1;
+      transform: translate3d(0,0,0);
+    }
+
+    /* Aurora NIT */
+    :root[data-theme="night"] .wrap::before{
+      content:"";
+      position:fixed;
+      inset:-25%;
+      pointer-events:none;
+      z-index:-1;
+      background:
+        radial-gradient(900px 520px at 78% 18%,
+          rgba(90,180,255,.14),
+          rgba(90,180,255,.06) 48%,
+          transparent 74%),
+        radial-gradient(1100px 620px at 30% 85%,
+          rgba(80,255,200,.08),
+          rgba(80,255,200,.03) 48%,
+          transparent 74%);
+      opacity:.75;
+      mix-blend-mode: screen;
+      transform: translate3d(0,0,0);
+      animation: auroraDrift 80s ease-in-out infinite alternate;
+    }
+
+    @keyframes auroraDrift{
+      from { transform: translate3d(-18px, 14px, 0); }
+      to   { transform: translate3d(24px, -18px, 0); }
+    }
+
+    /* Estrelles NIT: MOLT MÉS NOMBROSES + MÉS VISIBLES + ANIMACIÓ */
+    :root[data-theme="night"] .wrap::after{
+      content:"";
+      position:fixed;
+      inset:-10%;
+      pointer-events:none;
+      z-index:-1;
+
+      /* moltes estrelles “macro” (punts) */
+      background:
+        radial-gradient(2px 2px at 6% 12%, rgba(255,255,255,.90), transparent 60%),
+        radial-gradient(1.6px 1.6px at 12% 26%, rgba(255,255,255,.70), transparent 60%),
+        radial-gradient(2px 2px at 18% 18%, rgba(255,255,255,.85), transparent 60%),
+        radial-gradient(1.4px 1.4px at 22% 40%, rgba(255,255,255,.60), transparent 60%),
+        radial-gradient(2.2px 2.2px at 28% 14%, rgba(255,255,255,.95), transparent 60%),
+        radial-gradient(1.4px 1.4px at 32% 28%, rgba(255,255,255,.62), transparent 60%),
+        radial-gradient(2px 2px at 36% 10%, rgba(255,255,255,.82), transparent 60%),
+        radial-gradient(1.6px 1.6px at 40% 22%, rgba(255,255,255,.70), transparent 60%),
+        radial-gradient(2px 2px at 44% 16%, rgba(255,255,255,.88), transparent 60%),
+        radial-gradient(1.4px 1.4px at 48% 34%, rgba(255,255,255,.58), transparent 60%),
+        radial-gradient(2.2px 2.2px at 52% 12%, rgba(255,255,255,.95), transparent 60%),
+        radial-gradient(1.4px 1.4px at 56% 26%, rgba(255,255,255,.62), transparent 60%),
+        radial-gradient(2px 2px at 60% 18%, rgba(255,255,255,.86), transparent 60%),
+        radial-gradient(1.6px 1.6px at 64% 38%, rgba(255,255,255,.68), transparent 60%),
+        radial-gradient(2px 2px at 68% 14%, rgba(255,255,255,.90), transparent 60%),
+        radial-gradient(1.4px 1.4px at 72% 30%, rgba(255,255,255,.58), transparent 60%),
+        radial-gradient(2.4px 2.4px at 76% 18%, rgba(255,255,255,.98), transparent 60%),
+        radial-gradient(1.6px 1.6px at 80% 42%, rgba(255,255,255,.70), transparent 60%),
+        radial-gradient(2px 2px at 84% 12%, rgba(255,255,255,.88), transparent 60%),
+        radial-gradient(1.4px 1.4px at 88% 28%, rgba(255,255,255,.60), transparent 60%),
+        radial-gradient(2.2px 2.2px at 92% 18%, rgba(255,255,255,.92), transparent 60%),
+
+        /* estrelles baixes */
+        radial-gradient(2px 2px at 10% 70%, rgba(255,255,255,.82), transparent 60%),
+        radial-gradient(1.4px 1.4px at 18% 78%, rgba(255,255,255,.58), transparent 60%),
+        radial-gradient(2.2px 2.2px at 26% 72%, rgba(255,255,255,.90), transparent 60%),
+        radial-gradient(1.4px 1.4px at 34% 86%, rgba(255,255,255,.58), transparent 60%),
+        radial-gradient(2px 2px at 42% 76%, rgba(255,255,255,.84), transparent 60%),
+        radial-gradient(1.6px 1.6px at 50% 82%, rgba(255,255,255,.66), transparent 60%),
+        radial-gradient(2.2px 2.2px at 58% 74%, rgba(255,255,255,.92), transparent 60%),
+        radial-gradient(1.4px 1.4px at 66% 88%, rgba(255,255,255,.60), transparent 60%),
+        radial-gradient(2px 2px at 74% 76%, rgba(255,255,255,.84), transparent 60%),
+        radial-gradient(1.6px 1.6px at 82% 86%, rgba(255,255,255,.68), transparent 60%),
+        radial-gradient(2.2px 2.2px at 90% 74%, rgba(255,255,255,.90), transparent 60%),
+
+        /* “pols” extra (micro-estrelles) */
+        radial-gradient(1px 1px at 8% 22%, rgba(255,255,255,.40), transparent 60%),
+        radial-gradient(1px 1px at 14% 50%, rgba(255,255,255,.36), transparent 60%),
+        radial-gradient(1px 1px at 26% 44%, rgba(255,255,255,.34), transparent 60%),
+        radial-gradient(1px 1px at 38% 48%, rgba(255,255,255,.33), transparent 60%),
+        radial-gradient(1px 1px at 52% 46%, rgba(255,255,255,.34), transparent 60%),
+        radial-gradient(1px 1px at 68% 50%, rgba(255,255,255,.33), transparent 60%),
+        radial-gradient(1px 1px at 78% 54%, rgba(255,255,255,.34), transparent 60%),
+        radial-gradient(1px 1px at 92% 50%, rgba(255,255,255,.35), transparent 60%);
+
+      opacity:.95;
+      transform: translate3d(0,0,0);
+      filter: drop-shadow(0 0 4px rgba(255,255,255,.18));
+      animation: starDrift 130s linear infinite, starTwinkle 4.6s ease-in-out infinite;
+    }
+
+    @keyframes starDrift{
+      from { transform: translate3d(0,0,0); }
+      to   { transform: translate3d(38px, -28px, 0); }
+    }
+    @keyframes starTwinkle{
+      0%, 100% { opacity:.88; }
+      50%      { opacity:1; }
+    }
+
+    header{display:flex;gap:14px;align-items:center;justify-content:space-between;margin-bottom:14px}
+    .title{display:flex;gap:12px;align-items:center}
+    .logo{
+      width:44px;height:44px;border-radius:14px;
+      display:flex;align-items:center;justify-content:center;
+      color: var(--accent2);
+      background: linear-gradient(135deg, rgba(14,58,102,1), rgba(30,120,200,1));
+      box-shadow:
+        0 10px 30px rgba(30,120,200,.45),
+        inset 0 0 0 1px rgba(255,255,255,.25);
+      flex:0 0 auto;
+    }
+    .logo svg{width:26px;height:26px}
+
+    h1{margin:0;font-size:26px;font-weight:800;letter-spacing:.6px;line-height:1.1}
+
+    .pillbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:flex-end}
+    .pill{
+      display:inline-flex;gap:8px;align-items:center;
+      padding:8px 12px;border-radius:999px;
+      background: var(--chipBg);
+      border:1px solid var(--chipStroke);
+      color: var(--muted);
+      font-size: 12px;
+      backdrop-filter: blur(10px);
+      user-select:none;
+    }
+    .dot{width:8px;height:8px;border-radius:999px;background:rgba(255,255,255,.45)}
+    .dot.good{background:rgba(40,209,124,.9)}
+    .dot.bad{background:rgba(255,92,108,.95)}
+
+    .grid{display:grid;grid-template-columns:1.2fr .8fr;gap:16px}
+    @media (max-width: 950px){
+      .grid{grid-template-columns:1fr}
+      header{flex-direction:column;align-items:flex-start}
+      .pillbar{justify-content:flex-start}
+    }
+
+    .card{
+      background: var(--panel);
+      border: 1px solid var(--stroke);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+      overflow:hidden;
+    }
+    .card .inner{padding:16px}
+
+    .totalBox{
+      display:flex;align-items:flex-end;justify-content:space-between;gap:14px;
+      padding:16px;
+      background: linear-gradient(135deg, rgba(30,120,200,.18), rgba(159,212,255,.10));
+      border-bottom: 1px solid rgba(255,255,255,.10);
+    }
+    .totalLabel{color:var(--muted);font-size:12px;letter-spacing:.2px}
+    .totalValue{font-size:30px;font-weight:800;letter-spacing:.6px;font-variant-numeric:tabular-nums}
+    .count{color:var(--muted);font-size:12px;margin-top:6px}
+
+    button{
+      border:none;cursor:pointer;user-select:none;
+      border-radius:14px;padding:10px 12px;
+      font-weight:700;letter-spacing:.2px;color:var(--text);
+      background: var(--btnBg);
+      border:1px solid var(--btnStroke);
+      transition: transform .08s ease, background .15s ease, border-color .15s ease, opacity .15s ease;
+    }
+    button:hover{background: rgba(255,255,255,.12);border-color: rgba(255,255,255,.18)}
+    button:active{transform: translateY(1px)}
+    button:disabled{opacity:.45;cursor:not-allowed}
+    .btnPrimary{
+      background: linear-gradient(135deg, rgba(40,209,124,.95), rgba(37,205,255,.55));
+      border: 1px solid rgba(255,255,255,.16);
+      color:#07120c;
+    }
+    .btnDanger{background: var(--dangerBg);border-color: var(--dangerStroke)}
+    .btnGhost{background: transparent}
+
+    .editor{display:none;margin-bottom:14px}
+    .editor.show{display:block}
+
+    .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+    .field{
+      flex:1;min-width:180px;
+      display:flex;gap:10px;align-items:center;
+      padding:10px 12px;border-radius:14px;
+      background: var(--panel2);
+      border:1px solid rgba(255,255,255,.10);
+    }
+    .field input{
+      width:100%;border:none;outline:none;
+      background:transparent;color:var(--text);font-size:14px;
+    }
+    .field input::placeholder{color:rgba(242,246,255,.45)}
+    .icon{width:18px;height:18px;opacity:.75;flex:0 0 auto}
+
+    .actions{margin-top:12px;justify-content:space-between}
+    .actions .leftActions,.actions .rightActions{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+
+    .hint{margin:10px 0 0 0;color:var(--muted);font-size:12px;min-height:16px}
+
+    .productsGrid{
+      display:grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap:14px;
+    }
+    @media (max-width: 720px){
+      .productsGrid{grid-template-columns:1fr}
+    }
+
+    .prodCard{
+      border-radius:18px;
+      overflow:hidden;
+      background: rgba(15,45,80,.65);
+      border: 1px solid rgba(160,210,255,.18);
+      display:flex;flex-direction:column;
+      min-height:260px;
+      position:relative;
+    }
+    [data-theme="night"] .prodCard{
+      background: rgba(10,22,42,.62);
+      border-color: rgba(140,190,255,.14);
+    }
+
+    .prodCard.prio{
+      border-color: var(--prioStroke);
+      box-shadow: 0 0 0 1px var(--prioGlow), 0 20px 60px rgba(0,0,0,.35);
+    }
+
+    .prodTop{display:flex;align-items:center;justify-content:space-between;padding:12px 12px 0 12px;gap:10px}
+
+    .prioBadge{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:6px 10px;border-radius:999px;
+      border: 1px solid rgba(255,204,102,.35);
+      background: var(--prioBg);
+      color: var(--prioText);
+      font-size:12px;font-weight:800;letter-spacing:.2px;
+      user-select:none;
+    }
+
+    .pricePill{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:6px 10px;border-radius:999px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.06);
+      font-variant-numeric:tabular-nums;
+      color: rgba(242,246,255,.92);
+      font-size:12px;font-weight:800;letter-spacing:.5px;
+    }
+
+    .imgBox{
+      margin:10px 12px 0;
+      height:150px;border-radius:16px;overflow:hidden;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.25);
+      display:flex;align-items:center;justify-content:center;
+    }
+    .imgBox img{width:100%;height:100%;object-fit:cover;display:block}
+    .imgBox .noimg{color:rgba(242,246,255,.55);font-size:12px;text-align:center;padding:6px}
+
+    .prodBody{
+      padding:12px;display:flex;flex-direction:column;
+      gap:10px;flex:1;min-width:0;
+    }
+    .prodName{
+      font-weight:800;font-size:16px;
+      white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+    }
+
+    .link{
+      display:inline-flex;align-items:center;gap:6px;
+      color: var(--link);
+      text-decoration:none;
+      padding:8px 10px;border-radius:14px;
+      border:1px solid var(--linkStroke);
+      background: var(--linkBg);
+      max-width:100%;
+      width:fit-content;
+    }
+    .link:hover{text-decoration:underline}
+    .link span{
+      white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+      max-width:360px;display:inline-block;vertical-align:bottom;
+    }
+
+    .prodActions{
+      display:flex;gap:8px;flex-wrap:wrap;margin-top:auto;
+    }
+    .smallBtn{
+      padding:9px 10px;border-radius:14px;
+      font-weight:800;font-size:12px;
+    }
+    .togglePrio{
+      background: rgba(255,204,102,.10);
+      border-color: rgba(255,204,102,.22);
+    }
+
+    .sortBar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:14px}
+
+    .sideCardTitle{
+      display:flex;align-items:center;justify-content:space-between;
+      padding:14px 16px;border-bottom:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.05);
+    }
+    .sideCardTitle strong{font-size:14px}
+    .sideCardTitle span{color:var(--muted);font-size:12px}
+
+    .stats{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:16px}
+    .stat{padding:12px;border-radius:16px;background: rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.10)}
+    .stat .k{color:var(--muted);font-size:12px}
+    .stat .v{
+      font-size:18px;font-weight:800;margin-top:6px;
+      font-variant-numeric:tabular-nums;letter-spacing:.4px;
+    }
+
+    .toast{
+      position:fixed;left:50%;bottom:18px;transform:translateX(-50%);
+      padding:10px 12px;border-radius:14px;
+      background: rgba(0,0,0,.55);
+      border:1px solid rgba(255,255,255,.12);
+      color: rgba(242,246,255,.92);
+      font-size:13px;
+      opacity:0;pointer-events:none;
+      transition: opacity .2s ease, transform .2s ease;
+      backdrop-filter: blur(10px);
+      z-index: 9999;
+    }
+    .toast.show{opacity:1;transform: translateX(-50%) translateY(-2px)}
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <header>
+      <div class="title">
+        <div class="logo" title="Airbus A320">
+          <svg viewBox="0 0 64 64" aria-hidden="true">
+            <path d="M4 34 L60 32 L60 30 L4 28 Z" fill="currentColor"/>
+            <path d="M20 26 L34 14 L36 16 L24 28 Z" fill="currentColor"/>
+            <path d="M20 38 L34 50 L36 48 L24 36 Z" fill="currentColor"/>
+            <path d="M52 26 L60 20 L60 24 L54 30 Z" fill="currentColor"/>
+            <path d="M52 38 L60 44 L60 40 L54 34 Z" fill="currentColor"/>
+          </svg>
+        </div>
+        <div>
+          <h1>Wishlist</h1>
+        </div>
+      </div>
+
+      <div class="pillbar">
+        <button id="themeToggle" title="Canviar mode">🛫 Dia</button>
+
+        <div class="pill" id="lockPill"><span class="dot bad" id="lockDot"></span> Bloquejat</div>
+        <button id="unlock" title="Activar edició">🔐 Desbloquejar</button>
+        <button id="lock" title="Bloquejar edició" style="display:none">🔒 Bloquejar</button>
+      </div>
+    </header>
+
+    <div class="grid">
+      <section class="card">
+        <div class="totalBox">
+          <div>
+            <div class="totalLabel">TOTAL</div>
+            <div class="totalValue" id="total">0.00 €</div>
+            <div class="count" id="count">0 elements</div>
+          </div>
+          <button class="btnGhost" id="clearAll" title="Buidar llista">🧹 Buidar</button>
+        </div>
+
+        <div class="inner">
+          <div class="sortBar">
+            <button id="sortPrice">⇅ Preu</button>
+            <button id="sortPrio">⭐ Prioritat</button>
+          </div>
+
+          <div id="editor" class="editor">
+            <div class="row">
+              <div class="field" style="flex:1.2">
+                <svg class="icon" viewBox="0 0 24 24" fill="none">
+                  <path d="M4 7h16M4 12h16M4 17h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+                <input id="name" type="text" placeholder="Producte (ex: Pa, Gasolina...)" />
+              </div>
+
+              <div class="field" style="flex:.6; min-width:160px">
+                <svg class="icon" viewBox="0 0 24 24" fill="none">
+                  <path d="M12 3v18M16 7H9.5a3.5 3.5 0 0 0 0 7H14a3.5 3.5 0 0 1 0 7H8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+                <input id="price" type="number" step="0.01" min="0" placeholder="0.00" />
+              </div>
+            </div>
+
+            <div class="row" style="margin-top:10px">
+              <div class="field" style="flex:1.2">
+                <svg class="icon" viewBox="0 0 24 24" fill="none">
+                  <path d="M10 13a5 5 0 0 1 0-7l1-1a5 5 0 0 1 7 7l-1 1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                  <path d="M14 11a5 5 0 0 1 0 7l-1 1a5 5 0 1 1-7-7l1-1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+                <input id="link" type="url" placeholder="Enllaç (opcional) https://..." />
+              </div>
+
+              <div class="field" style="flex:.8; min-width:240px">
+                <svg class="icon" viewBox="0 0 24 24" fill="none">
+                  <path d="M4 16l4-4 3 3 5-6 4 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M4 6h16v12H4z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+                <input id="imageFile" type="file" accept="image/*" />
+              </div>
+
+              <label class="pill" style="cursor:pointer">
+                <input id="priority" type="checkbox" style="margin:0 8px 0 0; transform: translateY(1px);" />
+                ⭐ Prioritari
+              </label>
+
+              <button id="add" class="btnPrimary">＋ Afegir</button>
+            </div>
+
+            <div class="row actions" style="margin-top:12px">
+              <div class="leftActions">
+                <button id="export">⤓ Exportar</button>
+                <label class="pill" style="cursor:pointer">
+                  <input id="importFile" type="file" accept="application/json" style="display:none" />
+                  ⤒ Importar
+                </label>
+              </div>
+
+              <div class="rightActions">
+                <button id="save" class="btnPrimary">DESAR</button>
+              </div>
+            </div>
+
+            <p class="hint" id="hint"></p>
+          </div>
+
+          <div id="grid" class="productsGrid"></div>
+        </div>
+      </section>
+
+      <aside class="card">
+        <div class="sideCardTitle">
+          <strong>Resum</strong>
+          <span id="savedAt">—</span>
+        </div>
+
+        <div class="stats">
+          <div class="stat">
+            <div class="k">Més car</div>
+            <div class="v" id="maxItem">—</div>
+          </div>
+          <div class="stat">
+            <div class="k">Més barat</div>
+            <div class="v" id="minItem">—</div>
+          </div>
+          <div class="stat">
+            <div class="k">Mitjana</div>
+            <div class="v" id="avgItem">—</div>
+          </div>
+          <div class="stat">
+            <div class="k">Prioritaris</div>
+            <div class="v" id="prioCount">—</div>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    const $ = (id) => document.getElementById(id);
+
+    const EDIT_PASSWORD = "abde";
+    const AUTH_KEY = "wishlist_edit_auth_v1";
+    let editUnlocked = localStorage.getItem(AUTH_KEY) === "1";
+
+    let items = [];
+    let sortAscPrice = true;
+    let sortAscPrio = false;
+
+    const KEY = "wishlist_v1_grid_priority_hidden_editor";
+
+    const THEME_KEY = "wishlist_theme_mode_v1";
+    let themeMode = localStorage.getItem(THEME_KEY) || "day";
+
+    const Sound = (() => {
+      let ctx = null;
+      let enabled = true;
+      let unlocked = false;
+
+      function ensureCtx(){
+        if (!ctx) ctx = new (window.AudioContext || window.webkitAudioContext)();
+        return ctx;
+      }
+      function unlock(){
+        if (unlocked) return;
+        try {
+          const c = ensureCtx();
+          if (c.state === "suspended") c.resume();
+          unlocked = true;
+        } catch {}
+      }
+      function beep({freq=900, dur=0.03, type="sine", gain=0.02}){
+        if (!enabled) return;
+        let c;
+        try { c = ensureCtx(); } catch { return; }
+        unlock();
+
+        const o = c.createOscillator();
+        const g = c.createGain();
+
+        o.type = type;
+        o.frequency.setValueAtTime(freq, c.currentTime);
+
+        g.gain.setValueAtTime(0.0001, c.currentTime);
+        g.gain.exponentialRampToValueAtTime(gain, c.currentTime + 0.005);
+        g.gain.exponentialRampToValueAtTime(0.0001, c.currentTime + dur);
+
+        o.connect(g);
+        g.connect(c.destination);
+
+        o.start();
+        o.stop(c.currentTime + dur + 0.01);
+      }
+      function click(){ beep({freq:1150, dur:0.025, type:"square", gain:0.012}); }
+      function toggle(){
+        beep({freq:750, dur:0.05, type:"triangle", gain:0.015});
+        setTimeout(()=>beep({freq:950, dur:0.04, type:"triangle", gain:0.012}), 45);
+      }
+      function confirm(){
+        beep({freq:1050, dur:0.05, type:"sine", gain:0.014});
+        setTimeout(()=>beep({freq:1250, dur:0.05, type:"sine", gain:0.012}), 55);
+      }
+      function error(){ beep({freq:320, dur:0.08, type:"sawtooth", gain:0.02}); }
+
+      function bindAutoUnlock(){
+        const handler = () => unlock();
+        window.addEventListener("pointerdown", handler, {once:true});
+        window.addEventListener("keydown", handler, {once:true});
+      }
+      return { click, toggle, confirm, error, bindAutoUnlock };
+    })();
+
+    const els = {
+      editor: $("editor"),
+      name: $("name"),
+      price: $("price"),
+      link: $("link"),
+      imageFile: $("imageFile"),
+      priority: $("priority"),
+
+      add: $("add"),
+      save: $("save"),
+      export: $("export"),
+      importFile: $("importFile"),
+      clearAll: $("clearAll"),
+
+      sortPrice: $("sortPrice"),
+      sortPrio: $("sortPrio"),
+
+      themeToggle: $("themeToggle"),
+
+      grid: $("grid"),
+      total: $("total"),
+      count: $("count"),
+
+      maxItem: $("maxItem"),
+      minItem: $("minItem"),
+      avgItem: $("avgItem"),
+      prioCount: $("prioCount"),
+      savedAt: $("savedAt"),
+
+      unlock: $("unlock"),
+      lock: $("lock"),
+      lockDot: $("lockDot"),
+      lockPill: $("lockPill"),
+
+      hint: $("hint"),
+      toast: $("toast"),
+    };
+
+    function euros(n){ return Number(n||0).toFixed(2) + " €"; }
+
+    function escapeHtml(str){
+      return String(str).replace(/[&<>"']/g, (m)=>({
+        "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+      }[m]));
+    }
+
+    function safeUrl(url){
+      const u = String(url||"").trim();
+      if (!u) return "";
+      try{
+        const parsed = new URL(u);
+        if (parsed.protocol === "http:" || parsed.protocol === "https:") return parsed.toString();
+        return "";
+      } catch { return ""; }
+    }
+
+    function showToast(msg){
+      els.toast.textContent = msg;
+      els.toast.classList.add("show");
+      setTimeout(()=>els.toast.classList.remove("show"), 1200);
+    }
+
+    function setHint(msg, type=""){
+      els.hint.textContent = msg || "";
+      els.hint.style.color =
+        type === "bad" ? "rgba(255,92,108,.95)" :
+        type === "warn" ? "rgba(255,204,102,.95)" :
+        "rgba(242,246,255,.72)";
+    }
+
+    function applyTheme(){
+      document.documentElement.setAttribute("data-theme", themeMode === "night" ? "night" : "day");
+      els.themeToggle.textContent = (themeMode === "night") ? "🌙 Nit" : "🛫 Dia";
+      els.themeToggle.title = (themeMode === "night") ? "Mode nit (creuer)" : "Mode dia (desenganxament)";
+      localStorage.setItem(THEME_KEY, themeMode);
+    }
+
+    function toggleTheme(){
+      themeMode = (themeMode === "night") ? "day" : "night";
+      applyTheme();
+      Sound.toggle();
+      showToast(themeMode === "night" ? "Mode nit" : "Mode dia");
+    }
+
+    function applyLockUI(){
+      const canEdit = editUnlocked;
+      els.editor.classList.toggle("show", canEdit);
+      els.clearAll.style.display = canEdit ? "inline-flex" : "none";
+      els.unlock.style.display = canEdit ? "none" : "inline-flex";
+      els.lock.style.display = canEdit ? "inline-flex" : "none";
+
+      els.lockDot.className = "dot " + (canEdit ? "good" : "bad");
+      els.lockPill.innerHTML = `<span class="${els.lockDot.className}" id="lockDot"></span> ${canEdit ? "Edició" : "Bloquejat"}`;
+      els.lockDot = $("lockDot");
+
+      render();
+    }
+
+    function calcTotalAndStats(){
+      const len = items.length;
+      const total = items.reduce((acc,it)=>acc+Number(it.price||0),0);
+      els.total.textContent = euros(total);
+      els.count.textContent = `${len} element${len===1?"":"s"}`;
+
+      if(len===0){
+        els.maxItem.textContent="—";
+        els.minItem.textContent="—";
+        els.avgItem.textContent="—";
+        els.prioCount.textContent="—";
+        return;
+      }
+
+      const prices = items.map(x=>Number(x.price||0));
+      const max = Math.max(...prices);
+      const min = Math.min(...prices);
+      const avg = total/len;
+      const prio = items.filter(x=>!!x.priority).length;
+
+      els.maxItem.textContent = euros(max);
+      els.minItem.textContent = euros(min);
+      els.avgItem.textContent = euros(avg);
+      els.prioCount.textContent = String(prio);
+    }
+
+    function render(){
+      els.grid.innerHTML = "";
+
+      items.forEach((it,idx)=>{
+        const card = document.createElement("div");
+        card.className = "prodCard" + (it.priority ? " prio" : "");
+
+        const imgHtml = it.imageDataUrl
+          ? `<img src="${it.imageDataUrl}" alt="img">`
+          : `<div class="noimg">Sense<br>imatge</div>`;
+
+        const cleanLink = safeUrl(it.link);
+        const linkHtml = cleanLink
+          ? `<a class="link" href="${cleanLink}" target="_blank" rel="noopener noreferrer" title="${escapeHtml(cleanLink)}">
+               🔗 <span>${escapeHtml(cleanLink)}</span>
+             </a>`
+          : "";
+
+        const prioHtml = it.priority ? `<span class="prioBadge">⭐ Prioritari</span>` : "";
+
+        const actionsHtml = editUnlocked ? `
+          <div class="prodActions">
+            <button class="smallBtn togglePrio" data-act="prio" data-i="${idx}">${it.priority ? "Treure ⭐" : "Marcar ⭐"}</button>
+            <button class="smallBtn" data-act="edit" data-i="${idx}">Editar</button>
+            <button class="smallBtn btnDanger" data-act="del" data-i="${idx}">Esborrar</button>
+          </div>
+        ` : "";
+
+        card.innerHTML = `
+          <div class="prodTop">
+            <div>${prioHtml}</div>
+            <div class="pricePill">${euros(it.price)}</div>
+          </div>
+          <div class="imgBox">${imgHtml}</div>
+          <div class="prodBody">
+            <div class="prodName" title="${escapeHtml(it.name)}">${escapeHtml(it.name)}</div>
+            ${linkHtml}
+            ${actionsHtml}
+          </div>
+        `;
+        els.grid.appendChild(card);
+      });
+
+      calcTotalAndStats();
+    }
+
+    function load(){
+      try{
+        const raw = localStorage.getItem(KEY);
+        items = raw ? JSON.parse(raw) : [];
+      } catch { items = []; }
+
+      const savedTs = localStorage.getItem(KEY+"_savedAt");
+      els.savedAt.textContent = savedTs ? `Desat: ${new Date(Number(savedTs)).toLocaleString()}` : "—";
+      render();
+    }
+
+    function save(){
+      if(!editUnlocked) return showToast("Bloquejat 🔒");
+      localStorage.setItem(KEY, JSON.stringify(items));
+      localStorage.setItem(KEY+"_savedAt", String(Date.now()));
+      els.savedAt.textContent = `Desat: ${new Date().toLocaleString()}`;
+      setHint("Desat ✅");
+      showToast("Desat ✅");
+      Sound.confirm();
+      setTimeout(()=>setHint(""), 1300);
+    }
+
+    function readFileAsDataURL(file){
+      return new Promise((resolve,reject)=>{
+        const r = new FileReader();
+        r.onload = ()=>resolve(String(r.result||""));
+        r.onerror = reject;
+        r.readAsDataURL(file);
+      });
+    }
+
+    async function addItem(){
+      if(!editUnlocked) return showToast("Bloquejat 🔒");
+
+      const name = (els.name.value||"").trim();
+      const price = Number(els.price.value);
+      const link = safeUrl(els.link.value);
+      const priority = !!els.priority.checked;
+
+      if(!name) return setHint("Posa un nom 🙂","warn");
+      if(!Number.isFinite(price)) return setHint("Posa un preu vàlid 🙂","warn");
+      if(price<0) return setHint("El preu no pot ser negatiu 😅","bad");
+
+      let imageDataUrl = "";
+      const f = els.imageFile.files?.[0];
+      if(f) imageDataUrl = await readFileAsDataURL(f);
+
+      items.push({ name, price:Number(price.toFixed(2)), link, imageDataUrl, priority });
+
+      els.name.value=""; els.price.value=""; els.link.value=""; els.imageFile.value="";
+      els.priority.checked=false; els.name.focus();
+
+      setHint("");
+      render();
+      showToast("Afegit");
+      Sound.confirm();
+    }
+
+    function sortByPrice(){
+      items.sort((a,b)=> sortAscPrice ? Number(a.price)-Number(b.price) : Number(b.price)-Number(a.price));
+      sortAscPrice = !sortAscPrice;
+      render();
+      showToast("Ordenat per preu");
+      Sound.click();
+    }
+
+    function sortByPriority(){
+      items.sort((a,b)=>{
+        const ap=a.priority?1:0, bp=b.priority?1:0;
+        return sortAscPrio ? (ap-bp) : (bp-ap);
+      });
+      sortAscPrio = !sortAscPrio;
+      render();
+      showToast("Ordenat per prioritat");
+      Sound.click();
+    }
+
+    function clearAll(){
+      if(!editUnlocked) return showToast("Bloquejat 🔒");
+      if(items.length===0) return;
+      if(!confirm("Vols buidar tota la llista?")) return;
+      items=[];
+      render();
+      save();
+      showToast("Llista buida");
+      Sound.confirm();
+    }
+
+    function exportJSON(){
+      if(!editUnlocked) return showToast("Bloquejat 🔒");
+      const payload = { exportedAt:new Date().toISOString(), items };
+      const blob = new Blob([JSON.stringify(payload,null,2)], {type:"application/json"});
+      const url = URL.createObjectURL(blob);
+
+      const a=document.createElement("a");
+      a.href=url; a.download="wishlist.json";
+      document.body.appendChild(a); a.click(); a.remove();
+      URL.revokeObjectURL(url);
+
+      showToast("Exportat ⤓");
+      Sound.confirm();
+    }
+
+    async function importJSON(file){
+      if(!editUnlocked) return showToast("Bloquejat 🔒");
+      try{
+        const text=await file.text();
+        const data=JSON.parse(text);
+        const incoming = Array.isArray(data) ? data : data.items;
+        if(!Array.isArray(incoming)) throw new Error("Format invàlid");
+
+        const normalized = incoming
+          .map(x=>({
+            name:String(x.name??"").trim(),
+            price:Number(x.price),
+            link:safeUrl(x.link),
+            imageDataUrl: typeof x.imageDataUrl==="string" ? x.imageDataUrl : "",
+            priority: !!x.priority
+          }))
+          .filter(x=>x.name && Number.isFinite(x.price));
+
+        if(normalized.length===0) return setHint("No hi havia elements vàlids per importar.","warn");
+
+        items = [...items, ...normalized].map(x=>({
+          name:x.name,
+          price:Number(Number(x.price).toFixed(2)),
+          link:x.link,
+          imageDataUrl:x.imageDataUrl,
+          priority:x.priority
+        }));
+
+        render();
+        save();
+        setHint("Importat ✅");
+        showToast("Importat ✅");
+        Sound.confirm();
+        setTimeout(()=>setHint(""),1300);
+      } catch {
+        setHint("No he pogut importar aquest fitxer (JSON invàlid).","bad");
+        Sound.error();
+      } finally {
+        els.importFile.value="";
+      }
+    }
+
+    function unlockEdit(){
+      const pass = prompt("Contrasenya d’edició:");
+      if(pass===null) return;
+      if(pass!==EDIT_PASSWORD){
+        showToast("Contrasenya incorrecta");
+        Sound.error();
+        return;
+      }
+      editUnlocked=true;
+      localStorage.setItem(AUTH_KEY,"1");
+      applyLockUI();
+      showToast("Edició activada ✅");
+      Sound.confirm();
+    }
+
+    function lockEdit(){
+      editUnlocked=false;
+      localStorage.removeItem(AUTH_KEY);
+      applyLockUI();
+      showToast("Bloquejat 🔒");
+      Sound.toggle();
+    }
+
+    Sound.bindAutoUnlock();
+
+    document.addEventListener("click",(e)=>{
+      const b=e.target.closest("button");
+      if(!b) return;
+      const id=b.id||"";
+      if(id==="themeToggle"||id==="save"||id==="add"||id==="unlock"||id==="lock") return;
+      Sound.click();
+    });
+
+    els.themeToggle.addEventListener("click", toggleTheme);
+    els.unlock.addEventListener("click", ()=>{ Sound.click(); unlockEdit(); });
+    els.lock.addEventListener("click", ()=>{ Sound.click(); lockEdit(); });
+
+    els.sortPrice.addEventListener("click", sortByPrice);
+    els.sortPrio.addEventListener("click", sortByPriority);
+
+    els.add.addEventListener("click", ()=>addItem());
+    els.save.addEventListener("click", save);
+    els.clearAll.addEventListener("click", clearAll);
+    els.export.addEventListener("click", exportJSON);
+    els.importFile.addEventListener("change",(e)=>{
+      const f=e.target.files?.[0];
+      if(f) importJSON(f);
+    });
+
+    els.name.addEventListener("keydown",(e)=>{ if(e.key==="Enter") els.price.focus(); });
+    els.price.addEventListener("keydown",(e)=>{ if(e.key==="Enter") addItem(); });
+
+    els.grid.addEventListener("click", async (e)=>{
+      const btn = e.target.closest("button");
+      if(!btn) return;
+      if(!editUnlocked) return;
+
+      const i = Number(btn.dataset.i);
+      const act = btn.dataset.act;
+      if(!Number.isFinite(i) || i<0 || i>=items.length) return;
+
+      const cur = items[i];
+
+      if(act==="del"){
+        items.splice(i,1);
+        render();
+        showToast("Esborrat");
+        Sound.confirm();
+        return;
+      }
+
+      if(act==="prio"){
+        cur.priority = !cur.priority;
+        render();
+        showToast(cur.priority ? "Marcat ⭐" : "Tret ⭐");
+        Sound.click();
+        return;
+      }
+
+      if(act==="edit"){
+        const newName = prompt("Nou nom:", cur.name);
+        if(newName===null) return;
+
+        const newPriceStr = prompt("Nou preu:", String(cur.price));
+        if(newPriceStr===null) return;
+
+        const newLinkStr = prompt("Nou enllaç (buit = sense enllaç):", cur.link || "");
+        if(newLinkStr===null) return;
+
+        const newPrice = Number(newPriceStr);
+        if(!Number.isFinite(newPrice) || newPrice<0){
+          setHint("Preu invàlid 😅","bad");
+          Sound.error();
+          return;
+        }
+
+        const changeImg = confirm("Vols canviar la imatge? (Acceptar = sí)");
+        let newImg = cur.imageDataUrl || "";
+
+        if(changeImg){
+          const inp=document.createElement("input");
+          inp.type="file";
+          inp.accept="image/*";
+          inp.onchange = async ()=>{
+            const f=inp.files?.[0];
+            if(f) newImg = await readFileAsDataURL(f);
+            else if(confirm("No has triat cap fitxer. Vols treure la imatge?")) newImg="";
+
+            items[i] = {
+              name: newName.trim() || cur.name,
+              price: Number(newPrice.toFixed(2)),
+              link: safeUrl(newLinkStr),
+              imageDataUrl: newImg,
+              priority: cur.priority
+            };
+            render();
+            showToast("Editat");
+            Sound.confirm();
+            setHint("");
+          };
+          inp.click();
+          return;
+        }
+
+        items[i] = {
+          name: newName.trim() || cur.name,
+          price: Number(newPrice.toFixed(2)),
+          link: safeUrl(newLinkStr),
+          imageDataUrl: newImg,
+          priority: cur.priority
+        };
+        render();
+        showToast("Editat");
+        Sound.confirm();
+        setHint("");
+      }
+    });
+
+    applyTheme();
+    load();
+    applyLockUI();
+  </script>
+</body>
+</html>
