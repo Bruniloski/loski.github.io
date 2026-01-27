@@ -1,0 +1,20 @@
+backend:
+  name: github
+  repo: Bruniloski/loski.github.io
+  branch: main
+  base_url: https://loski-github-io.pages.dev
+  auth_endpoint: api/auth
+
+media_folder: "uploads"
+public_folder: "/uploads"
+
+collections:
+  - name: "posts"
+    label: "Artículos"
+    folder: "posts"
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    fields:
+      - { label: "Título", name: "title", widget: "string" }
+      - { label: "Fecha", name: "date", widget: "datetime" }
+      - { label: "Contenido", name: "body", widget: "markdown" }
