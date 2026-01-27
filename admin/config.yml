@@ -1,5 +1,8 @@
+# URL pública de tu web
 site_url: https://loski-github-io.pages.dev
+display_url: https://loski-github-io.pages.dev
 
+# Backend: GitHub + Cloudflare Pages
 backend:
   name: github
   repo: Bruniloski/loski.github.io
@@ -7,17 +10,45 @@ backend:
   base_url: https://loski-github-io.pages.dev
   auth_endpoint: api/auth
 
-
+# Carpeta donde se guardan las imágenes subidas
 media_folder: "uploads"
 public_folder: "/uploads"
 
+# Colecciones (tu "base de datos")
 collections:
-  - name: "posts"
-    label: "Artículos"
-    folder: "posts"
+  - name: "products"
+    label: "Productos"
+    label_singular: "Producto"
+    folder: "products"
     create: true
-    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    delete: true
+    slug: "{{slug}}"
+    extension: "md"
+    format: "frontmatter"
+
     fields:
-      - { label: "Título", name: "title", widget: "string" }
-      - { label: "Fecha", name: "date", widget: "datetime" }
-      - { label: "Contenido", name: "body", widget: "markdown" }
+      - label: "Nombre del producto"
+        name: "title"
+        widget: "string"
+
+      - label: "Precio (€)"
+        name: "price"
+        widget: "number"
+        value_type: "float"
+        min: 0
+        step: 0.01
+
+      - label: "Prioridad"
+        name: "priority"
+        widget: "boolean"
+        default: false
+
+      - label: "Imagen del producto"
+        name: "image"
+        widget: "image"
+        required: false
+
+      - label: "Descripción / notas"
+        name: "body"
+        widget: "markdown"
+        required: false
