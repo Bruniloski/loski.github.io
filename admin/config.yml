@@ -1,3 +1,6 @@
+site_url: https://loski-github-io.pages.dev
+display_url: https://loski-github-io.pages.dev
+
 backend:
   name: github
   repo: Bruniloski/loski.github.io
