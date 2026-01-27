@@ -14,7 +14,6 @@
       --shadow: 0 20px 60px rgba(0,0,0,.45);
       --radius:18px;
 
-      /* DIA (desenganxament) */
       --skyTop:#0b2a4a;
       --skyMid:#123a63;
       --skyLow:#1e5fa3;
@@ -46,7 +45,6 @@
       --linkBg: rgba(37,205,255,.08);
     }
 
-    /* NIT (creuer) */
     [data-theme="night"]{
       --text:#eef3ff;
       --muted:rgba(238,243,255,.75);
@@ -94,9 +92,6 @@
       overflow-x:hidden;
     }
 
-    /* ===== NÚVOLS (MÉS GRANS, MÉS VISIBLES, MÉS NOMBROSOS) ===== */
-
-    /* Capa 1 núvols (animada) */
     body::before{
       content:"";
       position:fixed;
@@ -120,7 +115,6 @@
       filter: blur(0.2px);
     }
 
-    /* Capa 2 núvols (animada, diferent direcció/velocitat) */
     body::after{
       content:"";
       position:fixed;
@@ -151,15 +145,11 @@
       to   { transform: translate3d(260px, -160px, 0); }
     }
 
-    /* Mode nit: núvols també visibles però una mica més discrets */
     :root[data-theme="night"] body::before{ opacity:.55; }
     :root[data-theme="night"] body::after{ opacity:.45; }
 
-    /* ===== Detall PRO: llum de cabina (DIA) + estrelles (NIT, MÉS I MÉS VISIBLES) ===== */
-
     .wrap{max-width: 1040px;margin: 28px auto;padding: 0 16px 28px; position:relative}
 
-    /* Llum cabina DIA */
     :root[data-theme="day"] .wrap::before{
       content:"";
       position:fixed;
@@ -176,7 +166,6 @@
       transform: translate3d(0,0,0);
     }
 
-    /* Aurora NIT */
     :root[data-theme="night"] .wrap::before{
       content:"";
       position:fixed;
@@ -203,15 +192,12 @@
       to   { transform: translate3d(24px, -18px, 0); }
     }
 
-    /* Estrelles NIT: MOLT MÉS NOMBROSES + MÉS VISIBLES + ANIMACIÓ */
     :root[data-theme="night"] .wrap::after{
       content:"";
       position:fixed;
       inset:-10%;
       pointer-events:none;
       z-index:-1;
-
-      /* moltes estrelles “macro” (punts) */
       background:
         radial-gradient(2px 2px at 6% 12%, rgba(255,255,255,.90), transparent 60%),
         radial-gradient(1.6px 1.6px at 12% 26%, rgba(255,255,255,.70), transparent 60%),
@@ -235,7 +221,6 @@
         radial-gradient(1.4px 1.4px at 88% 28%, rgba(255,255,255,.60), transparent 60%),
         radial-gradient(2.2px 2.2px at 92% 18%, rgba(255,255,255,.92), transparent 60%),
 
-        /* estrelles baixes */
         radial-gradient(2px 2px at 10% 70%, rgba(255,255,255,.82), transparent 60%),
         radial-gradient(1.4px 1.4px at 18% 78%, rgba(255,255,255,.58), transparent 60%),
         radial-gradient(2.2px 2.2px at 26% 72%, rgba(255,255,255,.90), transparent 60%),
@@ -248,7 +233,6 @@
         radial-gradient(1.6px 1.6px at 82% 86%, rgba(255,255,255,.68), transparent 60%),
         radial-gradient(2.2px 2.2px at 90% 74%, rgba(255,255,255,.90), transparent 60%),
 
-        /* “pols” extra (micro-estrelles) */
         radial-gradient(1px 1px at 8% 22%, rgba(255,255,255,.40), transparent 60%),
         radial-gradient(1px 1px at 14% 50%, rgba(255,255,255,.36), transparent 60%),
         radial-gradient(1px 1px at 26% 44%, rgba(255,255,255,.34), transparent 60%),
@@ -257,7 +241,6 @@
         radial-gradient(1px 1px at 68% 50%, rgba(255,255,255,.33), transparent 60%),
         radial-gradient(1px 1px at 78% 54%, rgba(255,255,255,.34), transparent 60%),
         radial-gradient(1px 1px at 92% 50%, rgba(255,255,255,.35), transparent 60%);
-
       opacity:.95;
       transform: translate3d(0,0,0);
       filter: drop-shadow(0 0 4px rgba(255,255,255,.18));
@@ -342,36 +325,9 @@
     button:hover{background: rgba(255,255,255,.12);border-color: rgba(255,255,255,.18)}
     button:active{transform: translateY(1px)}
     button:disabled{opacity:.45;cursor:not-allowed}
-    .btnPrimary{
-      background: linear-gradient(135deg, rgba(40,209,124,.95), rgba(37,205,255,.55));
-      border: 1px solid rgba(255,255,255,.16);
-      color:#07120c;
-    }
-    .btnDanger{background: var(--dangerBg);border-color: var(--dangerStroke)}
     .btnGhost{background: transparent}
 
-    .editor{display:none;margin-bottom:14px}
-    .editor.show{display:block}
-
-    .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-    .field{
-      flex:1;min-width:180px;
-      display:flex;gap:10px;align-items:center;
-      padding:10px 12px;border-radius:14px;
-      background: var(--panel2);
-      border:1px solid rgba(255,255,255,.10);
-    }
-    .field input{
-      width:100%;border:none;outline:none;
-      background:transparent;color:var(--text);font-size:14px;
-    }
-    .field input::placeholder{color:rgba(242,246,255,.45)}
-    .icon{width:18px;height:18px;opacity:.75;flex:0 0 auto}
-
-    .actions{margin-top:12px;justify-content:space-between}
-    .actions .leftActions,.actions .rightActions{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-
-    .hint{margin:10px 0 0 0;color:var(--muted);font-size:12px;min-height:16px}
+    .sortBar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:14px}
 
     .productsGrid{
       display:grid;
@@ -458,20 +414,6 @@
       max-width:360px;display:inline-block;vertical-align:bottom;
     }
 
-    .prodActions{
-      display:flex;gap:8px;flex-wrap:wrap;margin-top:auto;
-    }
-    .smallBtn{
-      padding:9px 10px;border-radius:14px;
-      font-weight:800;font-size:12px;
-    }
-    .togglePrio{
-      background: rgba(255,204,102,.10);
-      border-color: rgba(255,204,102,.22);
-    }
-
-    .sortBar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:14px}
-
     .sideCardTitle{
       display:flex;align-items:center;justify-content:space-between;
       padding:14px 16px;border-bottom:1px solid rgba(255,255,255,.10);
@@ -524,10 +466,7 @@
 
       <div class="pillbar">
         <button id="themeToggle" title="Canviar mode">🛫 Dia</button>
-
-        <div class="pill" id="lockPill"><span class="dot bad" id="lockDot"></span> Bloquejat</div>
-        <button id="unlock" title="Activar edició">🔐 Desbloquejar</button>
-        <button id="lock" title="Bloquejar edició" style="display:none">🔒 Bloquejar</button>
+        <div class="pill"><span class="dot good"></span> Públic</div>
       </div>
     </header>
 
@@ -539,72 +478,12 @@
             <div class="totalValue" id="total">0.00 €</div>
             <div class="count" id="count">0 elements</div>
           </div>
-          <button class="btnGhost" id="clearAll" title="Buidar llista">🧹 Buidar</button>
         </div>
 
         <div class="inner">
           <div class="sortBar">
             <button id="sortPrice">⇅ Preu</button>
             <button id="sortPrio">⭐ Prioritat</button>
-          </div>
-
-          <div id="editor" class="editor">
-            <div class="row">
-              <div class="field" style="flex:1.2">
-                <svg class="icon" viewBox="0 0 24 24" fill="none">
-                  <path d="M4 7h16M4 12h16M4 17h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                </svg>
-                <input id="name" type="text" placeholder="Producte (ex: Pa, Gasolina...)" />
-              </div>
-
-              <div class="field" style="flex:.6; min-width:160px">
-                <svg class="icon" viewBox="0 0 24 24" fill="none">
-                  <path d="M12 3v18M16 7H9.5a3.5 3.5 0 0 0 0 7H14a3.5 3.5 0 0 1 0 7H8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                </svg>
-                <input id="price" type="number" step="0.01" min="0" placeholder="0.00" />
-              </div>
-            </div>
-
-            <div class="row" style="margin-top:10px">
-              <div class="field" style="flex:1.2">
-                <svg class="icon" viewBox="0 0 24 24" fill="none">
-                  <path d="M10 13a5 5 0 0 1 0-7l1-1a5 5 0 0 1 7 7l-1 1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                  <path d="M14 11a5 5 0 0 1 0 7l-1 1a5 5 0 1 1-7-7l1-1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                </svg>
-                <input id="link" type="url" placeholder="Enllaç (opcional) https://..." />
-              </div>
-
-              <div class="field" style="flex:.8; min-width:240px">
-                <svg class="icon" viewBox="0 0 24 24" fill="none">
-                  <path d="M4 16l4-4 3 3 5-6 4 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                  <path d="M4 6h16v12H4z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                </svg>
-                <input id="imageFile" type="file" accept="image/*" />
-              </div>
-
-              <label class="pill" style="cursor:pointer">
-                <input id="priority" type="checkbox" style="margin:0 8px 0 0; transform: translateY(1px);" />
-                ⭐ Prioritari
-              </label>
-
-              <button id="add" class="btnPrimary">＋ Afegir</button>
-            </div>
-
-            <div class="row actions" style="margin-top:12px">
-              <div class="leftActions">
-                <button id="export">⤓ Exportar</button>
-                <label class="pill" style="cursor:pointer">
-                  <input id="importFile" type="file" accept="application/json" style="display:none" />
-                  ⤒ Importar
-                </label>
-              </div>
-
-              <div class="rightActions">
-                <button id="save" class="btnPrimary">DESAR</button>
-              </div>
-            </div>
-
-            <p class="hint" id="hint"></p>
           </div>
 
           <div id="grid" class="productsGrid"></div>
@@ -644,15 +523,9 @@
   <script>
     const $ = (id) => document.getElementById(id);
 
-    const EDIT_PASSWORD = "abde";
-    const AUTH_KEY = "wishlist_edit_auth_v1";
-    let editUnlocked = localStorage.getItem(AUTH_KEY) === "1";
-
     let items = [];
     let sortAscPrice = true;
     let sortAscPrio = false;
-
-    const KEY = "wishlist_v1_grid_priority_hidden_editor";
 
     const THEME_KEY = "wishlist_theme_mode_v1";
     let themeMode = localStorage.getItem(THEME_KEY) || "day";
@@ -716,41 +589,18 @@
     })();
 
     const els = {
-      editor: $("editor"),
-      name: $("name"),
-      price: $("price"),
-      link: $("link"),
-      imageFile: $("imageFile"),
-      priority: $("priority"),
-
-      add: $("add"),
-      save: $("save"),
-      export: $("export"),
-      importFile: $("importFile"),
-      clearAll: $("clearAll"),
-
-      sortPrice: $("sortPrice"),
-      sortPrio: $("sortPrio"),
-
       themeToggle: $("themeToggle"),
-
       grid: $("grid"),
       total: $("total"),
       count: $("count"),
-
       maxItem: $("maxItem"),
       minItem: $("minItem"),
       avgItem: $("avgItem"),
       prioCount: $("prioCount"),
       savedAt: $("savedAt"),
-
-      unlock: $("unlock"),
-      lock: $("lock"),
-      lockDot: $("lockDot"),
-      lockPill: $("lockPill"),
-
-      hint: $("hint"),
       toast: $("toast"),
+      sortPrice: $("sortPrice"),
+      sortPrio: $("sortPrio"),
     };
 
     function euros(n){ return Number(n||0).toFixed(2) + " €"; }
@@ -777,14 +627,6 @@
       setTimeout(()=>els.toast.classList.remove("show"), 1200);
     }
 
-    function setHint(msg, type=""){
-      els.hint.textContent = msg || "";
-      els.hint.style.color =
-        type === "bad" ? "rgba(255,92,108,.95)" :
-        type === "warn" ? "rgba(255,204,102,.95)" :
-        "rgba(242,246,255,.72)";
-    }
-
     function applyTheme(){
       document.documentElement.setAttribute("data-theme", themeMode === "night" ? "night" : "day");
       els.themeToggle.textContent = (themeMode === "night") ? "🌙 Nit" : "🛫 Dia";
@@ -797,20 +639,6 @@
       applyTheme();
       Sound.toggle();
       showToast(themeMode === "night" ? "Mode nit" : "Mode dia");
-    }
-
-    function applyLockUI(){
-      const canEdit = editUnlocked;
-      els.editor.classList.toggle("show", canEdit);
-      els.clearAll.style.display = canEdit ? "inline-flex" : "none";
-      els.unlock.style.display = canEdit ? "none" : "inline-flex";
-      els.lock.style.display = canEdit ? "inline-flex" : "none";
-
-      els.lockDot.className = "dot " + (canEdit ? "good" : "bad");
-      els.lockPill.innerHTML = `<span class="${els.lockDot.className}" id="lockDot"></span> ${canEdit ? "Edició" : "Bloquejat"}`;
-      els.lockDot = $("lockDot");
-
-      render();
     }
 
     function calcTotalAndStats(){
@@ -842,12 +670,12 @@
     function render(){
       els.grid.innerHTML = "";
 
-      items.forEach((it,idx)=>{
+      items.forEach((it)=>{
         const card = document.createElement("div");
         card.className = "prodCard" + (it.priority ? " prio" : "");
 
-        const imgHtml = it.imageDataUrl
-          ? `<img src="${it.imageDataUrl}" alt="img">`
+        const imgHtml = it.image
+          ? `<img src="${escapeHtml(it.image)}" alt="img">`
           : `<div class="noimg">Sense<br>imatge</div>`;
 
         const cleanLink = safeUrl(it.link);
@@ -859,14 +687,6 @@
 
         const prioHtml = it.priority ? `<span class="prioBadge">⭐ Prioritari</span>` : "";
 
-        const actionsHtml = editUnlocked ? `
-          <div class="prodActions">
-            <button class="smallBtn togglePrio" data-act="prio" data-i="${idx}">${it.priority ? "Treure ⭐" : "Marcar ⭐"}</button>
-            <button class="smallBtn" data-act="edit" data-i="${idx}">Editar</button>
-            <button class="smallBtn btnDanger" data-act="del" data-i="${idx}">Esborrar</button>
-          </div>
-        ` : "";
-
         card.innerHTML = `
           <div class="prodTop">
             <div>${prioHtml}</div>
@@ -876,7 +696,6 @@
           <div class="prodBody">
             <div class="prodName" title="${escapeHtml(it.name)}">${escapeHtml(it.name)}</div>
             ${linkHtml}
-            ${actionsHtml}
           </div>
         `;
         els.grid.appendChild(card);
@@ -885,62 +704,32 @@
       calcTotalAndStats();
     }
 
-    function load(){
+    async function loadFromAPI(){
+      els.savedAt.textContent = "Carregant...";
       try{
-        const raw = localStorage.getItem(KEY);
-        items = raw ? JSON.parse(raw) : [];
-      } catch { items = []; }
+        const res = await fetch("/api/products", { cache: "no-store" });
+        if(!res.ok) throw new Error("API " + res.status);
+        const data = await res.json();
 
-      const savedTs = localStorage.getItem(KEY+"_savedAt");
-      els.savedAt.textContent = savedTs ? `Desat: ${new Date(Number(savedTs)).toLocaleString()}` : "—";
-      render();
-    }
+        items = (Array.isArray(data) ? data : [])
+          .map(x => ({
+            name: String(x.name ?? "").trim(),
+            price: Number(x.price ?? 0),
+            link: String(x.link ?? ""),
+            image: String(x.image ?? ""),
+            priority: !!x.priority
+          }))
+          .filter(x => x.name && Number.isFinite(x.price));
 
-    function save(){
-      if(!editUnlocked) return showToast("Bloquejat 🔒");
-      localStorage.setItem(KEY, JSON.stringify(items));
-      localStorage.setItem(KEY+"_savedAt", String(Date.now()));
-      els.savedAt.textContent = `Desat: ${new Date().toLocaleString()}`;
-      setHint("Desat ✅");
-      showToast("Desat ✅");
-      Sound.confirm();
-      setTimeout(()=>setHint(""), 1300);
-    }
-
-    function readFileAsDataURL(file){
-      return new Promise((resolve,reject)=>{
-        const r = new FileReader();
-        r.onload = ()=>resolve(String(r.result||""));
-        r.onerror = reject;
-        r.readAsDataURL(file);
-      });
-    }
-
-    async function addItem(){
-      if(!editUnlocked) return showToast("Bloquejat 🔒");
-
-      const name = (els.name.value||"").trim();
-      const price = Number(els.price.value);
-      const link = safeUrl(els.link.value);
-      const priority = !!els.priority.checked;
-
-      if(!name) return setHint("Posa un nom 🙂","warn");
-      if(!Number.isFinite(price)) return setHint("Posa un preu vàlid 🙂","warn");
-      if(price<0) return setHint("El preu no pot ser negatiu 😅","bad");
-
-      let imageDataUrl = "";
-      const f = els.imageFile.files?.[0];
-      if(f) imageDataUrl = await readFileAsDataURL(f);
-
-      items.push({ name, price:Number(price.toFixed(2)), link, imageDataUrl, priority });
-
-      els.name.value=""; els.price.value=""; els.link.value=""; els.imageFile.value="";
-      els.priority.checked=false; els.name.focus();
-
-      setHint("");
-      render();
-      showToast("Afegit");
-      Sound.confirm();
+        els.savedAt.textContent = `Publicat · ${new Date().toLocaleString()}`;
+        render();
+      } catch(e){
+        items = [];
+        render();
+        els.savedAt.textContent = "Error carregant";
+        showToast("No he pogut carregar /api/products");
+        Sound.error();
+      }
     }
 
     function sortByPrice(){
@@ -962,215 +751,22 @@
       Sound.click();
     }
 
-    function clearAll(){
-      if(!editUnlocked) return showToast("Bloquejat 🔒");
-      if(items.length===0) return;
-      if(!confirm("Vols buidar tota la llista?")) return;
-      items=[];
-      render();
-      save();
-      showToast("Llista buida");
-      Sound.confirm();
-    }
-
-    function exportJSON(){
-      if(!editUnlocked) return showToast("Bloquejat 🔒");
-      const payload = { exportedAt:new Date().toISOString(), items };
-      const blob = new Blob([JSON.stringify(payload,null,2)], {type:"application/json"});
-      const url = URL.createObjectURL(blob);
-
-      const a=document.createElement("a");
-      a.href=url; a.download="wishlist.json";
-      document.body.appendChild(a); a.click(); a.remove();
-      URL.revokeObjectURL(url);
-
-      showToast("Exportat ⤓");
-      Sound.confirm();
-    }
-
-    async function importJSON(file){
-      if(!editUnlocked) return showToast("Bloquejat 🔒");
-      try{
-        const text=await file.text();
-        const data=JSON.parse(text);
-        const incoming = Array.isArray(data) ? data : data.items;
-        if(!Array.isArray(incoming)) throw new Error("Format invàlid");
-
-        const normalized = incoming
-          .map(x=>({
-            name:String(x.name??"").trim(),
-            price:Number(x.price),
-            link:safeUrl(x.link),
-            imageDataUrl: typeof x.imageDataUrl==="string" ? x.imageDataUrl : "",
-            priority: !!x.priority
-          }))
-          .filter(x=>x.name && Number.isFinite(x.price));
-
-        if(normalized.length===0) return setHint("No hi havia elements vàlids per importar.","warn");
-
-        items = [...items, ...normalized].map(x=>({
-          name:x.name,
-          price:Number(Number(x.price).toFixed(2)),
-          link:x.link,
-          imageDataUrl:x.imageDataUrl,
-          priority:x.priority
-        }));
-
-        render();
-        save();
-        setHint("Importat ✅");
-        showToast("Importat ✅");
-        Sound.confirm();
-        setTimeout(()=>setHint(""),1300);
-      } catch {
-        setHint("No he pogut importar aquest fitxer (JSON invàlid).","bad");
-        Sound.error();
-      } finally {
-        els.importFile.value="";
-      }
-    }
-
-    function unlockEdit(){
-      const pass = prompt("Contrasenya d’edició:");
-      if(pass===null) return;
-      if(pass!==EDIT_PASSWORD){
-        showToast("Contrasenya incorrecta");
-        Sound.error();
-        return;
-      }
-      editUnlocked=true;
-      localStorage.setItem(AUTH_KEY,"1");
-      applyLockUI();
-      showToast("Edició activada ✅");
-      Sound.confirm();
-    }
-
-    function lockEdit(){
-      editUnlocked=false;
-      localStorage.removeItem(AUTH_KEY);
-      applyLockUI();
-      showToast("Bloquejat 🔒");
-      Sound.toggle();
-    }
-
     Sound.bindAutoUnlock();
 
     document.addEventListener("click",(e)=>{
       const b=e.target.closest("button");
       if(!b) return;
       const id=b.id||"";
-      if(id==="themeToggle"||id==="save"||id==="add"||id==="unlock"||id==="lock") return;
+      if(id==="themeToggle") return;
       Sound.click();
     });
 
     els.themeToggle.addEventListener("click", toggleTheme);
-    els.unlock.addEventListener("click", ()=>{ Sound.click(); unlockEdit(); });
-    els.lock.addEventListener("click", ()=>{ Sound.click(); lockEdit(); });
-
     els.sortPrice.addEventListener("click", sortByPrice);
     els.sortPrio.addEventListener("click", sortByPriority);
 
-    els.add.addEventListener("click", ()=>addItem());
-    els.save.addEventListener("click", save);
-    els.clearAll.addEventListener("click", clearAll);
-    els.export.addEventListener("click", exportJSON);
-    els.importFile.addEventListener("change",(e)=>{
-      const f=e.target.files?.[0];
-      if(f) importJSON(f);
-    });
-
-    els.name.addEventListener("keydown",(e)=>{ if(e.key==="Enter") els.price.focus(); });
-    els.price.addEventListener("keydown",(e)=>{ if(e.key==="Enter") addItem(); });
-
-    els.grid.addEventListener("click", async (e)=>{
-      const btn = e.target.closest("button");
-      if(!btn) return;
-      if(!editUnlocked) return;
-
-      const i = Number(btn.dataset.i);
-      const act = btn.dataset.act;
-      if(!Number.isFinite(i) || i<0 || i>=items.length) return;
-
-      const cur = items[i];
-
-      if(act==="del"){
-        items.splice(i,1);
-        render();
-        showToast("Esborrat");
-        Sound.confirm();
-        return;
-      }
-
-      if(act==="prio"){
-        cur.priority = !cur.priority;
-        render();
-        showToast(cur.priority ? "Marcat ⭐" : "Tret ⭐");
-        Sound.click();
-        return;
-      }
-
-      if(act==="edit"){
-        const newName = prompt("Nou nom:", cur.name);
-        if(newName===null) return;
-
-        const newPriceStr = prompt("Nou preu:", String(cur.price));
-        if(newPriceStr===null) return;
-
-        const newLinkStr = prompt("Nou enllaç (buit = sense enllaç):", cur.link || "");
-        if(newLinkStr===null) return;
-
-        const newPrice = Number(newPriceStr);
-        if(!Number.isFinite(newPrice) || newPrice<0){
-          setHint("Preu invàlid 😅","bad");
-          Sound.error();
-          return;
-        }
-
-        const changeImg = confirm("Vols canviar la imatge? (Acceptar = sí)");
-        let newImg = cur.imageDataUrl || "";
-
-        if(changeImg){
-          const inp=document.createElement("input");
-          inp.type="file";
-          inp.accept="image/*";
-          inp.onchange = async ()=>{
-            const f=inp.files?.[0];
-            if(f) newImg = await readFileAsDataURL(f);
-            else if(confirm("No has triat cap fitxer. Vols treure la imatge?")) newImg="";
-
-            items[i] = {
-              name: newName.trim() || cur.name,
-              price: Number(newPrice.toFixed(2)),
-              link: safeUrl(newLinkStr),
-              imageDataUrl: newImg,
-              priority: cur.priority
-            };
-            render();
-            showToast("Editat");
-            Sound.confirm();
-            setHint("");
-          };
-          inp.click();
-          return;
-        }
-
-        items[i] = {
-          name: newName.trim() || cur.name,
-          price: Number(newPrice.toFixed(2)),
-          link: safeUrl(newLinkStr),
-          imageDataUrl: newImg,
-          priority: cur.priority
-        };
-        render();
-        showToast("Editat");
-        Sound.confirm();
-        setHint("");
-      }
-    });
-
     applyTheme();
-    load();
-    applyLockUI();
+    loadFromAPI();
   </script>
 </body>
 </html>
