@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Bruno</title>
+
+  <style>
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      min-height:100vh;
+      display:grid;
+      place-items:center;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      background: radial-gradient(1200px 800px at 20% 20%, rgba(120,160,255,.18), transparent 60%),
+                  radial-gradient(900px 700px at 80% 70%, rgba(120,255,200,.10), transparent 60%),
+                  #0b0f1a;
+      color:#e8eefc;
+    }
+    .wrap{width:min(980px,92vw); padding:44px 0}
+    h1{
+      margin:0 0 18px;
+      font-size: clamp(54px, 8vw, 96px);
+      letter-spacing:-0.03em;
+      line-height:1;
+      font-weight:800;
+    }
+    p{margin:0 0 26px; color:#9aa7c7; font-size:16px}
+    .card{
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.06);
+      border-radius:18px;
+      padding:18px;
+      display:flex;
+      gap:14px;
+      align-items:center;
+      justify-content:space-between;
+      backdrop-filter: blur(10px);
+    }
+    a.btn{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      text-decoration:none;
+      color:#e8eefc;
+      padding:12px 14px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.06);
+      transition: transform .12s ease, background .12s ease;
+      font-weight:700;
+    }
+    a.btn:hover{transform: translateY(-1px); background:rgba(255,255,255,.10)}
+    .ico{font-size:18px}
+    .small{font-size:13px; color:#9aa7c7; margin-top:14px}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Bruno</h1>
+    <p>Mi espacio personal. Entra donde quieras.</p>
+
+    <div class="card">
+      <div>
+        <div style="font-weight:800;margin-bottom:2px;">Wishlist</div>
+        <div class="small" style="margin:0;">Lista pública de cosas que quiero</div>
+      </div>
+
+      <a class="btn" href="/wishlist/">
+        <span class="ico">🛒</span>
+        Entrar
+      </a>
+    </div>
+
+    <div class="small">Más secciones próximamente.</div>
+  </div>
+</body>
+</html>
