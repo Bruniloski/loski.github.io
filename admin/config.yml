@@ -1,11 +1,11 @@
-site_url: https://loski-github-io.pages.dev
-display_url: https://loski-github-io.pages.dev
+site_url: https://blovi.pages.dev
+display_url: https://blovi.pages.dev
 
 backend:
   name: github
   repo: Bruniloski/loski.github.io
   branch: main
-  base_url: https://loski-github-io.pages.dev
+  base_url: https://blovi.pages.dev
   auth_endpoint: api/auth
 
 media_folder: "uploads"
