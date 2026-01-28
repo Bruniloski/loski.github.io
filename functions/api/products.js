@@ -1,12 +1,22 @@
-export async function onRequest() {
+export async function onRequest(context) {
+  const { env } = context;
+
   const owner = "Bruniloski";
   const repo = "loski.github.io";
   const path = "products";
 
+  const headers = {
+    "Accept": "application/vnd.github+json",
+    "User-Agent": "loski-pages-products",
+  };
+
+  if (env.GITHUB_TOKEN) {
+    headers["Authorization"] = `Bearer ${env.GITHUB_TOKEN}`;
+  }
+
+  // 1) Listar archivos en /products
   const listUrl = `https://api.github.com/repos/${owner}/${repo}/contents/${path}`;
-  const listRes = await fetch(listUrl, {
-    headers: { Accept: "application/vnd.github+json" },
-  });
+  const listRes = await fetch(listUrl, { headers });
 
   if (!listRes.ok) {
     return json(
@@ -22,9 +32,10 @@ export async function onRequest() {
       (x.name.endsWith(".md") || x.name.endsWith(".markdown"))
   );
 
+  // 2) Descargar cada markdown y sacar el frontmatter
   const products = [];
   for (const f of files) {
-    const rawRes = await fetch(f.download_url);
+    const rawRes = await fetch(f.download_url, { headers });
     if (!rawRes.ok) continue;
 
     const text = await rawRes.text();
@@ -41,7 +52,7 @@ export async function onRequest() {
     });
   }
 
-  // orden por prioridad primero, luego por precio desc
+  // Prioridad primero, luego precio desc
   products.sort((a, b) => {
     const ap = a.priority ? 1 : 0;
     const bp = b.priority ? 1 : 0;
@@ -85,10 +96,8 @@ function parseFrontmatter(md) {
     const key = t.slice(0, i).trim();
     let val = t.slice(i + 1).trim();
 
-    // quitar comillas si las hay
     val = val.replace(/^"(.*)"$/, "$1").replace(/^'(.*)'$/, "$1");
 
-    // tipos básicos
     if (val === "true") data[key] = true;
     else if (val === "false") data[key] = false;
     else if (!Number.isNaN(Number(val)) && val !== "") data[key] = Number(val);
