@@ -1,7 +1,19 @@
 {
   "categories": [
-    { "id": "ropa",  "name": "Ropa",  "icon": "👕" },
-    { "id": "setup", "name": "Set up", "icon": "🖥️" },
-    { "id": "otros", "name": "Otros", "icon": "✨" }
+    {
+      "id": "ropa",
+      "name": "Roba",
+      "icon": "👔"
+    },
+    {
+      "id": "setup",
+      "name": "Set Up",
+      "icon": "👨🏻‍💻"
+    },
+    {
+      "id": "otros",
+      "name": "Altres",
+      "icon": "❓"
+    }
   ]
 }
