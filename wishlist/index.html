@@ -329,6 +329,24 @@
 
     .sortBar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:14px}
 
+    /* === CATEGORIES BAR === */
+    #categoryBar{gap:10px}
+    .catBtn{
+      display:inline-flex;align-items:center;gap:10px;
+      padding:10px 12px;
+      border-radius:999px;
+      background: var(--chipBg);
+      border:1px solid var(--chipStroke);
+      color: var(--text);
+      font-weight:800;
+      letter-spacing:.2px;
+    }
+    .catBtn.active{
+      background: rgba(255,255,255,.12);
+      border-color: rgba(255,255,255,.20);
+    }
+    .catBtn .mini{opacity:.85}
+
     .productsGrid{
       display:grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -398,7 +416,6 @@
       white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
     }
 
-    /* ✅ Mejora: notas / descripción */
     .prodNotes{
       color: rgba(242,246,255,.72);
       font-size: 12px;
@@ -454,6 +471,25 @@
       z-index: 9999;
     }
     .toast.show{opacity:1;transform: translateX(-50%) translateY(-2px)}
+
+    /* === MODO CATEGORÍA (más espacio) === */
+    body.inCategory aside.card{display:none;}
+    body.inCategory .totalBox{display:none;}
+    body.inCategory .pricePill{display:none !important;}
+
+    body.inCategory .productsGrid{
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap:14px;
+    }
+    @media (max-width: 980px){
+      body.inCategory .productsGrid{grid-template-columns: repeat(2, minmax(0, 1fr));}
+    }
+    @media (max-width: 720px){
+      body.inCategory .productsGrid{grid-template-columns:1fr;}
+    }
+
+    body.inCategory .imgBox{height:190px;}
+    body.inCategory .prodCard{min-height:320px;}
   </style>
 </head>
 
@@ -471,7 +507,7 @@
           </svg>
         </div>
         <div>
-          <h1>Wishlist</h1>
+          <h1 id="pageTitle">Wishlist</h1>
         </div>
       </div>
 
@@ -492,6 +528,9 @@
         </div>
 
         <div class="inner">
+          <!-- ✅ NUEVO: categorías -->
+          <div id="categoryBar" class="sortBar"></div>
+
           <div class="sortBar">
             <button id="sortPrice">⇅ Preu</button>
             <button id="sortPrio">⭐ Prioritat</button>
@@ -535,6 +574,10 @@
     const $ = (id) => document.getElementById(id);
 
     let items = [];
+    let allItems = [];
+    let categories = [];
+    let activeCategory = null;
+
     let sortAscPrice = true;
     let sortAscPrio = false;
 
@@ -612,6 +655,8 @@
       toast: $("toast"),
       sortPrice: $("sortPrice"),
       sortPrio: $("sortPrio"),
+      categoryBar: $("categoryBar"),
+      pageTitle: $("pageTitle"),
     };
 
     function euros(n){ return Number(n||0).toFixed(2) + " €"; }
@@ -691,7 +736,6 @@
 
         const cleanLink = safeUrl(it.link);
 
-        // ✅ Mejora: texto corto en el link
         const linkHtml = cleanLink
           ? `<a class="link" href="${cleanLink}" target="_blank" rel="noopener noreferrer" title="${escapeHtml(cleanLink)}">
                🔗 <span>Ver producto</span>
@@ -700,7 +744,6 @@
 
         const prioHtml = it.priority ? `<span class="prioBadge">⭐ Prioritari</span>` : "";
 
-        // ✅ Mejora: notas visibles (2 líneas)
         const notesText = String(it.notes || "").trim();
         const notesHtml = notesText
           ? `<div class="prodNotes" title="${escapeHtml(notesText)}">${escapeHtml(notesText)}</div>`
@@ -724,6 +767,79 @@
       calcTotalAndStats();
     }
 
+    async function loadCategories(){
+      try{
+        const r = await fetch("/data/categories.json", { cache: "no-store" });
+        const j = await r.json();
+        categories = Array.isArray(j.categories) ? j.categories : [];
+      } catch {
+        categories = [
+          { id:"ropa",  name:"Ropa",   icon:"👕" },
+          { id:"setup", name:"Set up", icon:"🖥️" },
+          { id:"otros", name:"Otros",  icon:"✨" },
+        ];
+      }
+    }
+
+    function setTitleByCategory(){
+      const base = "Wishlist";
+      if(!activeCategory){
+        els.pageTitle.textContent = base;
+        return;
+      }
+      const c = categories.find(x => x.id === activeCategory);
+      const name = c?.name || activeCategory;
+      els.pageTitle.textContent = `${base} · ${name}`;
+    }
+
+    function renderCategoryBar(){
+      if(!els.categoryBar) return;
+
+      const btnAll = `
+        <button class="catBtn ${activeCategory===null ? "active":""}" data-cat="">
+          🗂️ <span class="mini">Tot</span>
+        </button>
+      `;
+
+      const btns = categories.map(c => {
+        const isActive = activeCategory === c.id;
+        const icon = c.icon || "✨";
+        const name = c.name || c.id;
+        return `
+          <button class="catBtn ${isActive ? "active":""}" data-cat="${escapeHtml(c.id)}">
+            ${escapeHtml(icon)} <span>${escapeHtml(name)}</span>
+          </button>
+        `;
+      }).join("");
+
+      els.categoryBar.innerHTML = btnAll + btns;
+
+      els.categoryBar.querySelectorAll("button").forEach(b=>{
+        b.addEventListener("click", ()=>{
+          const cat = b.getAttribute("data-cat");
+          activeCategory = cat ? cat : null;
+
+          document.body.classList.toggle("inCategory", !!activeCategory);
+
+          applyFilterAndRender();
+          renderCategoryBar();
+          setTitleByCategory();
+
+          showToast(activeCategory ? "Categoria" : "Tot");
+          Sound.click();
+        });
+      });
+    }
+
+    function applyFilterAndRender(){
+      if(!activeCategory){
+        items = [...allItems];
+      } else {
+        items = allItems.filter(x => (x.category || "otros") === activeCategory);
+      }
+      render();
+    }
+
     async function loadFromAPI(){
       els.savedAt.textContent = "Carregant...";
       try{
@@ -731,20 +847,24 @@
         if(!res.ok) throw new Error("API " + res.status);
         const data = await res.json();
 
-        items = (Array.isArray(data) ? data : [])
+        allItems = (Array.isArray(data) ? data : [])
           .map(x => ({
             name: String(x.name ?? "").trim(),
             price: Number(x.price ?? 0),
             link: String(x.link ?? ""),
             image: String(x.image ?? ""),
-            notes: String(x.notes ?? ""),   // ✅ Mejora: notas en estado
-            priority: !!x.priority
+            notes: String(x.notes ?? ""),
+            priority: !!x.priority,
+            category: String(x.category ?? "otros").trim() || "otros"
           }))
           .filter(x => x.name && Number.isFinite(x.price));
 
         els.savedAt.textContent = `Publicat · ${new Date().toLocaleString()}`;
-        render();
+
+        applyFilterAndRender();
+        setTitleByCategory();
       } catch(e){
+        allItems = [];
         items = [];
         render();
         els.savedAt.textContent = "Error carregant";
@@ -787,8 +907,12 @@
     els.sortPrio.addEventListener("click", sortByPriority);
 
     applyTheme();
-    loadFromAPI();
+    (async ()=>{
+      await loadCategories();
+      renderCategoryBar();
+      setTitleByCategory();
+      await loadFromAPI();
+    })();
   </script>
 </body>
 </html>
-
