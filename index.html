@@ -32,9 +32,6 @@
       --btnBg: rgba(255,255,255,.08);
       --btnStroke: rgba(255,255,255,.12);
 
-      --dangerBg: rgba(255,92,108,.14);
-      --dangerStroke: rgba(255,92,108,.25);
-
       --prioStroke: rgba(255,204,102,.45);
       --prioGlow: rgba(255,204,102,.22);
       --prioBg: rgba(255,204,102,.10);
@@ -67,9 +64,6 @@
       --btnBg: rgba(255,255,255,.07);
       --btnStroke: rgba(255,255,255,.10);
 
-      --dangerBg: rgba(255,92,108,.12);
-      --dangerStroke: rgba(255,92,108,.22);
-
       --link: rgba(120,210,255,.95);
       --linkStroke: rgba(120,210,255,.22);
       --linkBg: rgba(120,210,255,.07);
@@ -101,13 +95,7 @@
         radial-gradient(1100px 420px at 70% 22%, rgba(255,255,255,.10), transparent 66%),
         radial-gradient(1300px 520px at 45% 48%, rgba(255,255,255,.09), transparent 70%),
         radial-gradient(1200px 460px at 25% 70%, rgba(255,255,255,.08), transparent 70%),
-        radial-gradient(1400px 540px at 78% 74%, rgba(255,255,255,.08), transparent 70%),
-
-        radial-gradient(900px 360px at 8% 40%, rgba(255,255,255,.07), transparent 70%),
-        radial-gradient(980px 380px at 92% 52%, rgba(255,255,255,.07), transparent 70%),
-        radial-gradient(1000px 400px at 55% 10%, rgba(255,255,255,.06), transparent 70%),
-        radial-gradient(1050px 420px at 52% 92%, rgba(255,255,255,.06), transparent 70%),
-        radial-gradient(950px 360px at 35% 30%, rgba(255,255,255,.06), transparent 70%);
+        radial-gradient(1400px 540px at 78% 74%, rgba(255,255,255,.08), transparent 70%);
       pointer-events:none;
       opacity:.95;
       transform: translate3d(0,0,0);
@@ -123,12 +111,7 @@
         radial-gradient(1400px 560px at 12% 30%, rgba(255,255,255,.08), transparent 72%),
         radial-gradient(1500px 600px at 82% 35%, rgba(255,255,255,.07), transparent 72%),
         radial-gradient(1350px 520px at 58% 62%, rgba(255,255,255,.06), transparent 74%),
-        radial-gradient(1250px 500px at 28% 88%, rgba(255,255,255,.06), transparent 74%),
-
-        radial-gradient(1000px 420px at 40% 38%, rgba(255,255,255,.05), transparent 75%),
-        radial-gradient(980px 400px at 65% 18%, rgba(255,255,255,.05), transparent 75%),
-        radial-gradient(980px 400px at 15% 60%, rgba(255,255,255,.05), transparent 75%),
-        radial-gradient(980px 400px at 88% 78%, rgba(255,255,255,.05), transparent 75%);
+        radial-gradient(1250px 500px at 28% 88%, rgba(255,255,255,.06), transparent 74%);
       pointer-events:none;
       opacity:.85;
       transform: translate3d(0,0,0);
@@ -150,112 +133,6 @@
 
     .wrap{max-width: 1040px;margin: 28px auto;padding: 0 16px 28px; position:relative}
 
-    :root[data-theme="day"] .wrap::before{
-      content:"";
-      position:fixed;
-      inset:-20%;
-      pointer-events:none;
-      z-index:-1;
-      background:
-        radial-gradient(620px 380px at 12% 10%,
-          rgba(160,220,255,.22),
-          rgba(160,220,255,.10) 42%,
-          transparent 72%);
-      mix-blend-mode: screen;
-      opacity:1;
-      transform: translate3d(0,0,0);
-    }
-
-    :root[data-theme="night"] .wrap::before{
-      content:"";
-      position:fixed;
-      inset:-25%;
-      pointer-events:none;
-      z-index:-1;
-      background:
-        radial-gradient(900px 520px at 78% 18%,
-          rgba(90,180,255,.14),
-          rgba(90,180,255,.06) 48%,
-          transparent 74%),
-        radial-gradient(1100px 620px at 30% 85%,
-          rgba(80,255,200,.08),
-          rgba(80,255,200,.03) 48%,
-          transparent 74%);
-      opacity:.75;
-      mix-blend-mode: screen;
-      transform: translate3d(0,0,0);
-      animation: auroraDrift 80s ease-in-out infinite alternate;
-    }
-
-    @keyframes auroraDrift{
-      from { transform: translate3d(-18px, 14px, 0); }
-      to   { transform: translate3d(24px, -18px, 0); }
-    }
-
-    :root[data-theme="night"] .wrap::after{
-      content:"";
-      position:fixed;
-      inset:-10%;
-      pointer-events:none;
-      z-index:-1;
-      background:
-        radial-gradient(2px 2px at 6% 12%, rgba(255,255,255,.90), transparent 60%),
-        radial-gradient(1.6px 1.6px at 12% 26%, rgba(255,255,255,.70), transparent 60%),
-        radial-gradient(2px 2px at 18% 18%, rgba(255,255,255,.85), transparent 60%),
-        radial-gradient(1.4px 1.4px at 22% 40%, rgba(255,255,255,.60), transparent 60%),
-        radial-gradient(2.2px 2.2px at 28% 14%, rgba(255,255,255,.95), transparent 60%),
-        radial-gradient(1.4px 1.4px at 32% 28%, rgba(255,255,255,.62), transparent 60%),
-        radial-gradient(2px 2px at 36% 10%, rgba(255,255,255,.82), transparent 60%),
-        radial-gradient(1.6px 1.6px at 40% 22%, rgba(255,255,255,.70), transparent 60%),
-        radial-gradient(2px 2px at 44% 16%, rgba(255,255,255,.88), transparent 60%),
-        radial-gradient(1.4px 1.4px at 48% 34%, rgba(255,255,255,.58), transparent 60%),
-        radial-gradient(2.2px 2.2px at 52% 12%, rgba(255,255,255,.95), transparent 60%),
-        radial-gradient(1.4px 1.4px at 56% 26%, rgba(255,255,255,.62), transparent 60%),
-        radial-gradient(2px 2px at 60% 18%, rgba(255,255,255,.86), transparent 60%),
-        radial-gradient(1.6px 1.6px at 64% 38%, rgba(255,255,255,.68), transparent 60%),
-        radial-gradient(2px 2px at 68% 14%, rgba(255,255,255,.90), transparent 60%),
-        radial-gradient(1.4px 1.4px at 72% 30%, rgba(255,255,255,.58), transparent 60%),
-        radial-gradient(2.4px 2.4px at 76% 18%, rgba(255,255,255,.98), transparent 60%),
-        radial-gradient(1.6px 1.6px at 80% 42%, rgba(255,255,255,.70), transparent 60%),
-        radial-gradient(2px 2px at 84% 12%, rgba(255,255,255,.88), transparent 60%),
-        radial-gradient(1.4px 1.4px at 88% 28%, rgba(255,255,255,.60), transparent 60%),
-        radial-gradient(2.2px 2.2px at 92% 18%, rgba(255,255,255,.92), transparent 60%),
-
-        radial-gradient(2px 2px at 10% 70%, rgba(255,255,255,.82), transparent 60%),
-        radial-gradient(1.4px 1.4px at 18% 78%, rgba(255,255,255,.58), transparent 60%),
-        radial-gradient(2.2px 2.2px at 26% 72%, rgba(255,255,255,.90), transparent 60%),
-        radial-gradient(1.4px 1.4px at 34% 86%, rgba(255,255,255,.58), transparent 60%),
-        radial-gradient(2px 2px at 42% 76%, rgba(255,255,255,.84), transparent 60%),
-        radial-gradient(1.6px 1.6px at 50% 82%, rgba(255,255,255,.66), transparent 60%),
-        radial-gradient(2.2px 2.2px at 58% 74%, rgba(255,255,255,.92), transparent 60%),
-        radial-gradient(1.4px 1.4px at 66% 88%, rgba(255,255,255,.60), transparent 60%),
-        radial-gradient(2px 2px at 74% 76%, rgba(255,255,255,.84), transparent 60%),
-        radial-gradient(1.6px 1.6px at 82% 86%, rgba(255,255,255,.68), transparent 60%),
-        radial-gradient(2.2px 2.2px at 90% 74%, rgba(255,255,255,.90), transparent 60%),
-
-        radial-gradient(1px 1px at 8% 22%, rgba(255,255,255,.40), transparent 60%),
-        radial-gradient(1px 1px at 14% 50%, rgba(255,255,255,.36), transparent 60%),
-        radial-gradient(1px 1px at 26% 44%, rgba(255,255,255,.34), transparent 60%),
-        radial-gradient(1px 1px at 38% 48%, rgba(255,255,255,.33), transparent 60%),
-        radial-gradient(1px 1px at 52% 46%, rgba(255,255,255,.34), transparent 60%),
-        radial-gradient(1px 1px at 68% 50%, rgba(255,255,255,.33), transparent 60%),
-        radial-gradient(1px 1px at 78% 54%, rgba(255,255,255,.34), transparent 60%),
-        radial-gradient(1px 1px at 92% 50%, rgba(255,255,255,.35), transparent 60%);
-      opacity:.95;
-      transform: translate3d(0,0,0);
-      filter: drop-shadow(0 0 4px rgba(255,255,255,.18));
-      animation: starDrift 130s linear infinite, starTwinkle 4.6s ease-in-out infinite;
-    }
-
-    @keyframes starDrift{
-      from { transform: translate3d(0,0,0); }
-      to   { transform: translate3d(38px, -28px, 0); }
-    }
-    @keyframes starTwinkle{
-      0%, 100% { opacity:.88; }
-      50%      { opacity:1; }
-    }
-
     header{display:flex;gap:14px;align-items:center;justify-content:space-between;margin-bottom:14px}
     .title{display:flex;gap:12px;align-items:center}
     .logo{
@@ -269,23 +146,21 @@
       flex:0 0 auto;
     }
     .logo svg{width:26px;height:26px}
-
     h1{margin:0;font-size:26px;font-weight:800;letter-spacing:.6px;line-height:1.1}
 
     .pillbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:flex-end}
     .pill{
       display:inline-flex;gap:8px;align-items:center;
       padding:8px 12px;border-radius:999px;
-      background: var(--chipBg);
-      border:1px solid var(--chipStroke);
-      color: var(--muted);
+      background: rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.10);
+      color: rgba(242,246,255,.72);
       font-size: 12px;
       backdrop-filter: blur(10px);
       user-select:none;
     }
     .dot{width:8px;height:8px;border-radius:999px;background:rgba(255,255,255,.45)}
     .dot.good{background:rgba(40,209,124,.9)}
-    .dot.bad{background:rgba(255,92,108,.95)}
 
     .grid{display:grid;grid-template-columns:1.2fr .8fr;gap:16px}
     @media (max-width: 950px){
@@ -318,14 +193,12 @@
       border:none;cursor:pointer;user-select:none;
       border-radius:14px;padding:10px 12px;
       font-weight:700;letter-spacing:.2px;color:var(--text);
-      background: var(--btnBg);
-      border:1px solid var(--btnStroke);
+      background: rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.12);
       transition: transform .08s ease, background .15s ease, border-color .15s ease, opacity .15s ease;
     }
     button:hover{background: rgba(255,255,255,.12);border-color: rgba(255,255,255,.18)}
     button:active{transform: translateY(1px)}
-    button:disabled{opacity:.45;cursor:not-allowed}
-    .btnGhost{background: transparent}
 
     .sortBar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:14px}
 
@@ -346,7 +219,10 @@
       display:flex;flex-direction:column;
       min-height:260px;
       position:relative;
+      cursor: pointer;
+      transition: transform .08s ease;
     }
+    .prodCard:active{transform: translateY(1px)}
     [data-theme="night"] .prodCard{
       background: rgba(10,22,42,.62);
       border-color: rgba(140,190,255,.14);
@@ -398,6 +274,16 @@
       white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
     }
 
+    .prodNotes{
+      color: rgba(242,246,255,.72);
+      font-size: 12px;
+      line-height: 1.35;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
     .link{
       display:inline-flex;align-items:center;gap:6px;
       color: var(--link);
@@ -409,10 +295,6 @@
       width:fit-content;
     }
     .link:hover{text-decoration:underline}
-    .link span{
-      white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
-      max-width:360px;display:inline-block;vertical-align:bottom;
-    }
 
     .sideCardTitle{
       display:flex;align-items:center;justify-content:space-between;
@@ -443,6 +325,59 @@
       z-index: 9999;
     }
     .toast.show{opacity:1;transform: translateX(-50%) translateY(-2px)}
+
+    /* ✅ Modal */
+    .modalOverlay{
+      position:fixed;
+      inset:0;
+      background: rgba(0,0,0,.55);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding:16px;
+      z-index: 99999;
+      backdrop-filter: blur(8px);
+    }
+    .modalOverlay.show{display:flex}
+    .modal{
+      width:min(720px, 100%);
+      border-radius: 18px;
+      background: rgba(10,30,55,.92);
+      border:1px solid rgba(160,210,255,.18);
+      box-shadow: 0 30px 80px rgba(0,0,0,.55);
+      overflow:hidden;
+    }
+    [data-theme="night"] .modal{
+      background: rgba(6,14,28,.92);
+      border-color: rgba(140,190,255,.14);
+    }
+    .modalHeader{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      padding:14px 16px;
+      border-bottom:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.05);
+    }
+    .modalHeader strong{
+      font-size:14px;
+      font-weight:800;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .modalClose{
+      padding:8px 10px;
+      border-radius: 12px;
+    }
+    .modalBody{
+      padding:16px;
+      color: rgba(242,246,255,.88);
+      font-size:14px;
+      line-height:1.5;
+      white-space: pre-wrap;
+    }
   </style>
 </head>
 
@@ -520,6 +455,17 @@
 
   <div class="toast" id="toast"></div>
 
+  <!-- ✅ Modal -->
+  <div class="modalOverlay" id="modalOverlay" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="modalHeader">
+        <strong id="modalTitle">Notes</strong>
+        <button class="modalClose" id="modalClose" type="button">✕</button>
+      </div>
+      <div class="modalBody" id="modalBody"></div>
+    </div>
+  </div>
+
   <script>
     const $ = (id) => document.getElementById(id);
 
@@ -574,10 +520,6 @@
         beep({freq:750, dur:0.05, type:"triangle", gain:0.015});
         setTimeout(()=>beep({freq:950, dur:0.04, type:"triangle", gain:0.012}), 45);
       }
-      function confirm(){
-        beep({freq:1050, dur:0.05, type:"sine", gain:0.014});
-        setTimeout(()=>beep({freq:1250, dur:0.05, type:"sine", gain:0.012}), 55);
-      }
       function error(){ beep({freq:320, dur:0.08, type:"sawtooth", gain:0.02}); }
 
       function bindAutoUnlock(){
@@ -585,7 +527,7 @@
         window.addEventListener("pointerdown", handler, {once:true});
         window.addEventListener("keydown", handler, {once:true});
       }
-      return { click, toggle, confirm, error, bindAutoUnlock };
+      return { click, toggle, error, bindAutoUnlock };
     })();
 
     const els = {
@@ -601,6 +543,11 @@
       toast: $("toast"),
       sortPrice: $("sortPrice"),
       sortPrio: $("sortPrio"),
+
+      modalOverlay: $("modalOverlay"),
+      modalClose: $("modalClose"),
+      modalTitle: $("modalTitle"),
+      modalBody: $("modalBody"),
     };
 
     function euros(n){ return Number(n||0).toFixed(2) + " €"; }
@@ -630,7 +577,6 @@
     function applyTheme(){
       document.documentElement.setAttribute("data-theme", themeMode === "night" ? "night" : "day");
       els.themeToggle.textContent = (themeMode === "night") ? "🌙 Nit" : "🛫 Dia";
-      els.themeToggle.title = (themeMode === "night") ? "Mode nit (creuer)" : "Mode dia (desenganxament)";
       localStorage.setItem(THEME_KEY, themeMode);
     }
 
@@ -667,25 +613,46 @@
       els.prioCount.textContent = String(prio);
     }
 
+    // ✅ Modal open/close
+    function openModal(title, body){
+      els.modalTitle.textContent = title || "Notes";
+      els.modalBody.textContent = body || "";
+      els.modalOverlay.classList.add("show");
+      els.modalOverlay.setAttribute("aria-hidden", "false");
+      Sound.click();
+    }
+    function closeModal(){
+      els.modalOverlay.classList.remove("show");
+      els.modalOverlay.setAttribute("aria-hidden", "true");
+      Sound.click();
+    }
+
     function render(){
       els.grid.innerHTML = "";
 
-      items.forEach((it)=>{
+      items.forEach((it, idx)=>{
         const card = document.createElement("div");
         card.className = "prodCard" + (it.priority ? " prio" : "");
+        card.dataset.idx = String(idx);
 
         const imgHtml = it.image
           ? `<img src="${escapeHtml(it.image)}" alt="img">`
           : `<div class="noimg">Sense<br>imatge</div>`;
 
         const cleanLink = safeUrl(it.link);
+
         const linkHtml = cleanLink
           ? `<a class="link" href="${cleanLink}" target="_blank" rel="noopener noreferrer" title="${escapeHtml(cleanLink)}">
-               🔗 <span>${escapeHtml(cleanLink)}</span>
+               🔗 <span>Ver producto</span>
              </a>`
           : "";
 
         const prioHtml = it.priority ? `<span class="prioBadge">⭐ Prioritari</span>` : "";
+
+        const notesText = String(it.notes || "").trim();
+        const notesHtml = notesText
+          ? `<div class="prodNotes" title="${escapeHtml(notesText)}">${escapeHtml(notesText)}</div>`
+          : "";
 
         card.innerHTML = `
           <div class="prodTop">
@@ -695,9 +662,28 @@
           <div class="imgBox">${imgHtml}</div>
           <div class="prodBody">
             <div class="prodName" title="${escapeHtml(it.name)}">${escapeHtml(it.name)}</div>
+            ${notesHtml}
             ${linkHtml}
           </div>
         `;
+
+        // ✅ Click tarjeta → modal si hay notas
+        card.addEventListener("click", () => {
+          const fullNotes = String(it.notes || "").trim();
+          if (fullNotes) {
+            openModal(it.name, fullNotes);
+          } else {
+            // si no hay notas, no abrimos nada (y no molestamos)
+            showToast("Sense notes");
+          }
+        });
+
+        // ✅ Si click en el link, NO abrir modal
+        const a = card.querySelector("a.link");
+        if (a) {
+          a.addEventListener("click", (e) => e.stopPropagation());
+        }
+
         els.grid.appendChild(card);
       });
 
@@ -717,6 +703,7 @@
             price: Number(x.price ?? 0),
             link: String(x.link ?? ""),
             image: String(x.image ?? ""),
+            notes: String(x.notes ?? ""),
             priority: !!x.priority
           }))
           .filter(x => x.name && Number.isFinite(x.price));
@@ -759,6 +746,15 @@
       const id=b.id||"";
       if(id==="themeToggle") return;
       Sound.click();
+    });
+
+    // ✅ Cerrar modal: botón, click fuera, ESC
+    els.modalClose.addEventListener("click", closeModal);
+    els.modalOverlay.addEventListener("click", (e) => {
+      if (e.target === els.modalOverlay) closeModal();
+    });
+    window.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && els.modalOverlay.classList.contains("show")) closeModal();
     });
 
     els.themeToggle.addEventListener("click", toggleTheme);
