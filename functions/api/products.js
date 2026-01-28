@@ -48,6 +48,7 @@ export async function onRequest(context) {
       link: typeof data.link === "string" ? data.link.trim() : "",
       image: typeof data.image === "string" ? data.image.trim() : "",
       notes: (body || "").trim(),
+      category: typeof data.category === "string" ? data.category.trim() : "otros",
       slug: f.name.replace(/\.(md|markdown)$/i, ""),
     });
   }
