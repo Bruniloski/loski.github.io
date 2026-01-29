@@ -287,7 +287,6 @@
     .dot.good{background:rgba(40,209,124,.9)}
     .dot.bad{background:rgba(255,92,108,.95)}
 
-    /* ✅ botón volver al landing */
     .homeBtn{
       display:inline-flex;
       align-items:center;
@@ -304,7 +303,6 @@
     .homeBtn:hover{background: rgba(255,255,255,.12);border-color: rgba(255,255,255,.18)}
     .homeBtn:active{transform: translateY(1px)}
 
-    /* ✅ siempre 1 columna (sin panel derecho) */
     .grid{display:grid;grid-template-columns:1fr;gap:16px}
 
     @media (max-width: 950px){
@@ -347,7 +345,6 @@
 
     .sortBar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:14px}
 
-    /* === CATEGORIES BAR === */
     #categoryBar{gap:10px}
     .catBtn{
       display:inline-flex;align-items:center;gap:10px;
@@ -474,7 +471,6 @@
     }
     .toast.show{opacity:1;transform: translateX(-50%) translateY(-2px)}
 
-    /* === MODO CATEGORÍA (más espacio) === */
     body.inCategory .totalBox{display:none;}
     body.inCategory .pricePill{display:none !important;}
 
@@ -629,7 +625,7 @@
         beep({freq:750, dur:0.05, type:"triangle", gain:0.015});
         setTimeout(()=>beep({freq:950, dur:0.04, type:"triangle", gain:0.012}), 45);
       }
-      function error(){ beep({freq:320, dur:0.08, type:"sawtooth", gain:0.02}); }
+      function error(){ beep({freq:320, dur:0.08, type:"sawtooth", gain=0.02}); }
       function bindAutoUnlock(){
         const handler = () => unlock();
         window.addEventListener("pointerdown", handler, {once:true});
@@ -696,14 +692,15 @@
       els.count.textContent = `${len} element${len===1?"":"s"}`;
     }
 
-    async function markPurchased(slug){
+    // ✅ Toggle purchased (mark / unmark)
+    async function setPurchased(slug, action){
       const id = String(slug || "").trim();
       if(!id) throw new Error("missing slug");
 
       const res = await fetch("/api/purchase", {
         method: "POST",
         headers: { "Content-Type":"application/json" },
-        body: JSON.stringify({ id })
+        body: JSON.stringify({ id, action })
       });
 
       if(!res.ok) throw new Error("purchase failed " + res.status);
@@ -754,30 +751,37 @@
           </div>
         `;
 
-        // Botó "Ja comprat"
         const wrap = card.querySelector(".buyWrap");
         const buyBtn = document.createElement("button");
         buyBtn.className = "buyBtn";
-        buyBtn.textContent = it.purchased ? "✅ Comprat" : "✅ Ja comprat";
-        buyBtn.disabled = !!it.purchased;
+        buyBtn.textContent = it.purchased ? "↩️ Desmarcar" : "✅ Ja comprat";
+        buyBtn.disabled = false;
 
         buyBtn.addEventListener("click", async () => {
           buyBtn.disabled = true;
           try{
-            await markPurchased(it.slug);
-            it.purchased = true;
-            card.classList.add("purchased");
-            buyBtn.textContent = "✅ Comprat";
-            showToast("Marcat com a comprat");
+            if (!it.purchased) {
+              await setPurchased(it.slug, "mark");
+              it.purchased = true;
+              card.classList.add("purchased");
+              buyBtn.textContent = "↩️ Desmarcar";
+              showToast("Marcat com a comprat");
+            } else {
+              await setPurchased(it.slug, "unmark");
+              it.purchased = false;
+              card.classList.remove("purchased");
+              buyBtn.textContent = "✅ Ja comprat";
+              showToast("Desmarcat");
+            }
           } catch(e){
-            buyBtn.disabled = false;
-            showToast("Error marcant com a comprat");
+            showToast("Error actualitzant");
             Sound.error();
+          } finally {
+            buyBtn.disabled = false;
           }
         });
 
         wrap.appendChild(buyBtn);
-
         els.grid.appendChild(card);
       });
 
