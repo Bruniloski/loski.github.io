@@ -6,7 +6,7 @@ export async function onRequest(context) {
   const path = "products";
 
   const headers = {
-    "Accept": "application/vnd.github+json",
+    Accept: "application/vnd.github+json",
     "User-Agent": "loski-pages-products",
   };
 
@@ -19,21 +19,16 @@ export async function onRequest(context) {
   const listRes = await fetch(listUrl, { headers });
 
   if (!listRes.ok) {
-    return json(
-      { error: "No pude listar /products", status: listRes.status },
-      500
-    );
+    return json({ error: "No pude listar /products", status: listRes.status }, 500);
   }
 
   const entries = await listRes.json();
   const files = (Array.isArray(entries) ? entries : []).filter(
-    (x) =>
-      x.type === "file" &&
-      (x.name.endsWith(".md") || x.name.endsWith(".markdown"))
+    (x) => x.type === "file" && (x.name.endsWith(".md") || x.name.endsWith(".markdown"))
   );
 
   // 2) Descargar cada markdown y sacar el frontmatter
-  const products = [];
+  let products = [];
   for (const f of files) {
     const rawRes = await fetch(f.download_url, { headers });
     if (!rawRes.ok) continue;
@@ -41,16 +36,40 @@ export async function onRequest(context) {
     const text = await rawRes.text();
     const { data, body } = parseFrontmatter(text);
 
+    const slug = f.name.replace(/\.(md|markdown)$/i, "");
+
     products.push({
-      name: String(data.title ?? f.name.replace(/\.(md|markdown)$/i, "")).trim(),
+      // mantenim el teu contracte actual:
+      name: String(data.title ?? slug).trim(),
       price: Number(data.price ?? 0),
       priority: !!data.priority,
       link: typeof data.link === "string" ? data.link.trim() : "",
       image: typeof data.image === "string" ? data.image.trim() : "",
       notes: (body || "").trim(),
       category: typeof data.category === "string" ? data.category.trim() : "otros",
-      slug: f.name.replace(/\.(md|markdown)$/i, ""),
+
+      // IMPORTANT per “comprat”
+      slug,           // id estable
+      purchased: false,
     });
+  }
+
+  // 2.5) Merge amb D1: purchased
+  try {
+    if (env.PURCHASES_DB && products.length) {
+      const ids = products.map((p) => p.slug).filter(Boolean);
+      const placeholders = ids.map(() => "?").join(",");
+
+      const { results } = await env.PURCHASES_DB
+        .prepare(`SELECT id FROM purchases WHERE id IN (${placeholders})`)
+        .bind(...ids)
+        .all();
+
+      const set = new Set((results || []).map((r) => r.id));
+      products = products.map((p) => ({ ...p, purchased: set.has(p.slug) }));
+    }
+  } catch (e) {
+    // Si D1 falla, no trenquem la web: només tornem purchased:false
   }
 
   // Prioridad primero, luego precio desc
@@ -107,3 +126,4 @@ function parseFrontmatter(md) {
 
   return { data, body };
 }
+
