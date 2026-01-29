@@ -491,6 +491,32 @@
 
     body.inCategory .imgBox{height:190px;}
     body.inCategory .prodCard{min-height:320px;}
+
+    /* ====== PURCHASED (Ja comprat) ====== */
+    .prodCard.purchased{
+      background: rgba(70, 180, 90, .16) !important;
+      border-color: rgba(70, 180, 90, .40) !important;
+    }
+
+    .prodCard.purchased .pricePill{
+      border-color: rgba(70, 180, 90, .30);
+      background: rgba(70, 180, 90, .10);
+    }
+
+    .purchasedTag{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:6px 10px;border-radius:999px;
+      border:1px solid rgba(70, 180, 90, .35);
+      background: rgba(70, 180, 90, .12);
+      color: rgba(210,255,220,.95);
+      font-size:12px;font-weight:900;letter-spacing:.2px;
+      user-select:none;
+      margin-left:8px;
+    }
+
+    .buyWrap{margin-top:2px;display:flex;gap:10px;flex-wrap:wrap}
+    .buyBtn{font-weight:900}
+    .buyBtn:disabled{opacity:.55;cursor:not-allowed}
   </style>
 </head>
 
@@ -670,12 +696,29 @@
       els.count.textContent = `${len} element${len===1?"":"s"}`;
     }
 
+    async function markPurchased(slug){
+      const id = String(slug || "").trim();
+      if(!id) throw new Error("missing slug");
+
+      const res = await fetch("/api/purchase", {
+        method: "POST",
+        headers: { "Content-Type":"application/json" },
+        body: JSON.stringify({ id })
+      });
+
+      if(!res.ok) throw new Error("purchase failed " + res.status);
+      return true;
+    }
+
     function render(){
       els.grid.innerHTML = "";
 
       items.forEach((it)=>{
         const card = document.createElement("div");
-        card.className = "prodCard" + (it.priority ? " prio" : "");
+        card.className =
+          "prodCard"
+          + (it.priority ? " prio" : "")
+          + (it.purchased ? " purchased" : "");
 
         const imgHtml = it.image
           ? `<img src="${escapeHtml(it.image)}" alt="img">`
@@ -690,6 +733,7 @@
           : "";
 
         const prioHtml = it.priority ? `<span class="prioBadge">⭐ Prioritari</span>` : "";
+        const purchasedHtml = it.purchased ? `<span class="purchasedTag">✅ Comprat</span>` : "";
 
         const notesText = String(it.notes || "").trim();
         const notesHtml = notesText
@@ -698,7 +742,7 @@
 
         card.innerHTML = `
           <div class="prodTop">
-            <div>${prioHtml}</div>
+            <div>${prioHtml} ${purchasedHtml}</div>
             <div class="pricePill">${euros(it.price)}</div>
           </div>
           <div class="imgBox">${imgHtml}</div>
@@ -706,8 +750,34 @@
             <div class="prodName" title="${escapeHtml(it.name)}">${escapeHtml(it.name)}</div>
             ${notesHtml}
             ${linkHtml}
+            <div class="buyWrap"></div>
           </div>
         `;
+
+        // Botó "Ja comprat"
+        const wrap = card.querySelector(".buyWrap");
+        const buyBtn = document.createElement("button");
+        buyBtn.className = "buyBtn";
+        buyBtn.textContent = it.purchased ? "✅ Comprat" : "✅ Ja comprat";
+        buyBtn.disabled = !!it.purchased;
+
+        buyBtn.addEventListener("click", async () => {
+          buyBtn.disabled = true;
+          try{
+            await markPurchased(it.slug);
+            it.purchased = true;
+            card.classList.add("purchased");
+            buyBtn.textContent = "✅ Comprat";
+            showToast("Marcat com a comprat");
+          } catch(e){
+            buyBtn.disabled = false;
+            showToast("Error marcant com a comprat");
+            Sound.error();
+          }
+        });
+
+        wrap.appendChild(buyBtn);
+
         els.grid.appendChild(card);
       });
 
@@ -796,6 +866,9 @@
 
         allItems = (Array.isArray(data) ? data : [])
           .map(x => ({
+            slug: String(x.slug ?? "").trim(),
+            purchased: !!x.purchased,
+
             name: String(x.name ?? "").trim(),
             price: Number(x.price ?? 0),
             link: String(x.link ?? ""),
@@ -804,7 +877,7 @@
             priority: !!x.priority,
             category: String(x.category ?? "otros").trim() || "otros"
           }))
-          .filter(x => x.name && Number.isFinite(x.price));
+          .filter(x => x.slug && x.name && Number.isFinite(x.price));
 
         els.savedAt.textContent = `Publicat · ${new Date().toLocaleString()}`;
 
