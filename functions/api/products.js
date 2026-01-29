@@ -7,123 +7,85 @@ export async function onRequest(context) {
 
   const headers = {
     Accept: "application/vnd.github+json",
-    "User-Agent": "loski-pages-products",
+    "User-Agent": "wishlist-products",
   };
 
   if (env.GITHUB_TOKEN) {
-    headers["Authorization"] = `Bearer ${env.GITHUB_TOKEN}`;
+    headers.Authorization = `Bearer ${env.GITHUB_TOKEN}`;
   }
 
-  // 1) Listar archivos en /products
-  const listUrl = `https://api.github.com/repos/${owner}/${repo}/contents/${path}`;
-  const listRes = await fetch(listUrl, { headers });
-
-  if (!listRes.ok) {
-    return json({ error: "No pude listar /products", status: listRes.status }, 500);
-  }
-
-  const entries = await listRes.json();
-  const files = (Array.isArray(entries) ? entries : []).filter(
-    (x) => x.type === "file" && (x.name.endsWith(".md") || x.name.endsWith(".markdown"))
+  // 1️⃣ Llistar fitxers
+  const listRes = await fetch(
+    `https://api.github.com/repos/${owner}/${repo}/contents/${path}`,
+    { headers }
   );
 
-  // 2) Descargar cada markdown y sacar el frontmatter
+  if (!listRes.ok) {
+    return new Response("Error llistant productes", { status: 500 });
+  }
+
+  const files = (await listRes.json()).filter(
+    f => f.type === "file" && f.name.endsWith(".md")
+  );
+
   let products = [];
+
+  // 2️⃣ Llegir cada producte
   for (const f of files) {
-    const rawRes = await fetch(f.download_url, { headers });
-    if (!rawRes.ok) continue;
+    const raw = await fetch(f.download_url, { headers }).then(r => r.text());
+    const { data, body } = parseFrontmatter(raw);
 
-    const text = await rawRes.text();
-    const { data, body } = parseFrontmatter(text);
-
-    const slug = f.name.replace(/\.(md|markdown)$/i, "");
+    const slug = f.name.replace(".md", "");
 
     products.push({
-      // mantenim el teu contracte actual:
-      name: String(data.title ?? slug).trim(),
-      price: Number(data.price ?? 0),
+      slug,                              // 🔑 ID
+      name: data.title || slug,
+      price: Number(data.price || 0),
       priority: !!data.priority,
-      link: typeof data.link === "string" ? data.link.trim() : "",
-      image: typeof data.image === "string" ? data.image.trim() : "",
-      notes: (body || "").trim(),
-      category: typeof data.category === "string" ? data.category.trim() : "otros",
-
-      // IMPORTANT per “comprat”
-      slug,           // id estable
-      purchased: false,
+      link: data.link || "",
+      image: data.image || "",
+      category: data.category || "otros",
+      notes: body || "",
+      purchased: false                  // 👈 per defecte
     });
   }
 
-  // 2.5) Merge amb D1: purchased
-  try {
-    if (env.PURCHASES_DB && products.length) {
-      const ids = products.map((p) => p.slug).filter(Boolean);
-      const placeholders = ids.map(() => "?").join(",");
+  // 3️⃣ Preguntar a D1 quins estan comprats
+  if (env.PURCHASES_DB && products.length) {
+    const ids = products.map(p => p.slug);
+    const placeholders = ids.map(() => "?").join(",");
 
-      const { results } = await env.PURCHASES_DB
-        .prepare(`SELECT id FROM purchases WHERE id IN (${placeholders})`)
-        .bind(...ids)
-        .all();
+    const res = await env.PURCHASES_DB
+      .prepare(`SELECT id FROM purchases WHERE id IN (${placeholders})`)
+      .bind(...ids)
+      .all();
 
-      const set = new Set((results || []).map((r) => r.id));
-      products = products.map((p) => ({ ...p, purchased: set.has(p.slug) }));
-    }
-  } catch (e) {
-    // Si D1 falla, no trenquem la web: només tornem purchased:false
+    const bought = new Set(res.results.map(r => r.id));
+
+    products = products.map(p => ({
+      ...p,
+      purchased: bought.has(p.slug)
+    }));
   }
-
-  // Prioridad primero, luego precio desc
-  products.sort((a, b) => {
-    const ap = a.priority ? 1 : 0;
-    const bp = b.priority ? 1 : 0;
-    if (bp !== ap) return bp - ap;
-    return Number(b.price) - Number(a.price);
-  });
 
   return new Response(JSON.stringify(products), {
     headers: {
-      "Content-Type": "application/json; charset=utf-8",
-      "Cache-Control": "no-store",
-    },
+      "Content-Type": "application/json",
+      "Cache-Control": "no-store"
+    }
   });
 }
 
-function json(obj, status = 200) {
-  return new Response(JSON.stringify(obj), {
-    status,
-    headers: {
-      "Content-Type": "application/json; charset=utf-8",
-      "Cache-Control": "no-store",
-    },
-  });
-}
+// 🧠 lector simple de frontmatter
+function parseFrontmatter(text) {
+  const match = text.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);
+  if (!match) return { data: {}, body: text };
 
-// Frontmatter simple: ---\nkey: value\n---\nbody...
-function parseFrontmatter(md) {
-  const m = md.match(/^---\s*\n([\s\S]*?)\n---\s*\n?([\s\S]*)$/);
-  if (!m) return { data: {}, body: md };
-
-  const yaml = m[1];
-  const body = m[2] ?? "";
   const data = {};
+  match[1].split("\n").forEach(line => {
+    const [k, ...v] = line.split(":");
+    if (k) data[k.trim()] = v.join(":").trim();
+  });
 
-  for (const line of yaml.split("\n")) {
-    const t = line.trim();
-    if (!t || t.startsWith("#")) continue;
-    const i = t.indexOf(":");
-    if (i === -1) continue;
-
-    const key = t.slice(0, i).trim();
-    let val = t.slice(i + 1).trim();
-
-    val = val.replace(/^"(.*)"$/, "$1").replace(/^'(.*)'$/, "$1");
-
-    if (val === "true") data[key] = true;
-    else if (val === "false") data[key] = false;
-    else if (!Number.isNaN(Number(val)) && val !== "") data[key] = Number(val);
-    else data[key] = val;
-  }
-
-  return { data, body };
+  return { data, body: match[2] };
 }
-
