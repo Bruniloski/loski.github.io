@@ -581,6 +581,7 @@
     const THEME_KEY = "wishlist_theme_mode_v1";
     let themeMode = localStorage.getItem(THEME_KEY) || "day";
 
+    // ✅ FIX: Sense destructuring amb defaults (evita "Invalid shorthand property initializer")
     const Sound = (() => {
       let ctx = null;
       let enabled = true;
@@ -596,12 +597,20 @@
           const c = ensureCtx();
           if (c.state === "suspended") c.resume();
           unlocked = true;
-        } catch {}
+        } catch (e) {}
       }
-      function beep({freq=900, dur=0.03, type="sine", gain=0.02}){
+
+      function beep(opts){
         if (!enabled) return;
+
+        opts = opts || {};
+        const freq = (opts.freq != null) ? opts.freq : 900;
+        const dur  = (opts.dur  != null) ? opts.dur  : 0.03;
+        const type = (opts.type != null) ? opts.type : "sine";
+        const gain = (opts.gain != null) ? opts.gain : 0.02;
+
         let c;
-        try { c = ensureCtx(); } catch { return; }
+        try { c = ensureCtx(); } catch (e) { return; }
         unlock();
 
         const o = c.createOscillator();
@@ -620,12 +629,13 @@
         o.start();
         o.stop(c.currentTime + dur + 0.01);
       }
+
       function click(){ beep({freq:1150, dur:0.025, type:"square", gain:0.012}); }
       function toggle(){
         beep({freq:750, dur:0.05, type:"triangle", gain:0.015});
-        setTimeout(()=>beep({freq:950, dur:0.04, type:"triangle", gain:0.012}), 45);
+        setTimeout(function(){ beep({freq:950, dur:0.04, type:"triangle", gain:0.012}); }, 45);
       }
-      function error(){ beep({freq:320, dur:0.08, type:"sawtooth", gain=0.02}); }
+      function error(){ beep({freq:320, dur:0.08, type:"sawtooth", gain:0.02}); }
       function bindAutoUnlock(){
         const handler = () => unlock();
         window.addEventListener("pointerdown", handler, {once:true});
@@ -940,3 +950,4 @@
   </script>
 </body>
 </html>
+
