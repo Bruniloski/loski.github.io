@@ -2,36 +2,42 @@ export async function onRequestPost({ request, env }) {
   try {
     const body = await request.json().catch(() => ({}));
     const id = (body?.id ?? "").toString().trim();
+    const action = (body?.action ?? "mark").toString().trim(); // "mark" | "unmark"
 
     if (!env.PURCHASES_DB) {
-      return new Response(JSON.stringify({ error: "Missing PURCHASES_DB binding" }), {
-        status: 500,
-        headers: { "Content-Type": "application/json; charset=utf-8" },
-      });
+      return json({ error: "Missing PURCHASES_DB binding" }, 500);
     }
 
     if (!id || id.length > 120) {
-      return new Response(JSON.stringify({ error: "Invalid id" }), {
-        status: 400,
-        headers: { "Content-Type": "application/json; charset=utf-8" },
-      });
+      return json({ error: "Invalid id" }, 400);
     }
 
-    const now = new Date().toISOString();
+    if (action === "mark") {
+      const now = new Date().toISOString();
+      await env.PURCHASES_DB
+        .prepare(`INSERT OR IGNORE INTO purchases (id, purchased, purchased_at) VALUES (?, 1, ?)`)
+        .bind(id, now)
+        .run();
+      return json({ ok: true, id, action });
+    }
 
-    // Idempotent: si ja existeix, no fa res.
-    await env.PURCHASES_DB
-      .prepare(`INSERT OR IGNORE INTO purchases (id, purchased, purchased_at) VALUES (?, 1, ?)`)
-      .bind(id, now)
-      .run();
+    if (action === "unmark") {
+      await env.PURCHASES_DB
+        .prepare(`DELETE FROM purchases WHERE id = ?`)
+        .bind(id)
+        .run();
+      return json({ ok: true, id, action });
+    }
 
-    return new Response(JSON.stringify({ ok: true, id }), {
-      headers: { "Content-Type": "application/json; charset=utf-8" },
-    });
+    return json({ error: "Invalid action" }, 400);
   } catch {
-    return new Response(JSON.stringify({ error: "Bad request" }), {
-      status: 400,
-      headers: { "Content-Type": "application/json; charset=utf-8" },
-    });
+    return json({ error: "Bad request" }, 400);
   }
+}
+
+function json(obj, status = 200) {
+  return new Response(JSON.stringify(obj), {
+    status,
+    headers: { "Content-Type": "application/json; charset=utf-8" },
+  });
 }
