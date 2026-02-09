@@ -488,7 +488,7 @@
     body.inCategory .imgBox{height:190px;}
     body.inCategory .prodCard{min-height:320px;}
 
-    /* ====== PURCHASED (Ja comprat) ====== */
+    /* ====== PURCHASED (Marcar Com a Comprat) ====== */
     .prodCard.purchased{
       background: rgba(70, 180, 90, .16) !important;
       border-color: rgba(70, 180, 90, .40) !important;
@@ -764,7 +764,7 @@
         const wrap = card.querySelector(".buyWrap");
         const buyBtn = document.createElement("button");
         buyBtn.className = "buyBtn";
-        buyBtn.textContent = it.purchased ? "↩️ Desmarcar" : "✅ Ja comprat";
+        buyBtn.textContent = it.purchased ? "↩️ Desmarcar" : "✅ Marcar Com a Comprat";
         buyBtn.disabled = false;
 
         buyBtn.addEventListener("click", async () => {
@@ -780,7 +780,7 @@
               await setPurchased(it.slug, "unmark");
               it.purchased = false;
               card.classList.remove("purchased");
-              buyBtn.textContent = "✅ Ja comprat";
+              buyBtn.textContent = "✅ Marcar Com a Comprat";
               showToast("Desmarcat");
             }
           } catch(e){
